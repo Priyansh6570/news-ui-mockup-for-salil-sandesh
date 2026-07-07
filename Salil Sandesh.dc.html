@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;0,800;1,600&family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">
+<script src="./assets/image-slot.js"></script>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0}
+  a{color:#c15600;text-decoration:none}
+  a:hover{color:#8f4200}
+  ::selection{background:#f5820a;color:#fff}
+  @keyframes ssPulse{0%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}100%{opacity:1;transform:scale(1)}}
+  @keyframes ssDrop{0%{opacity:0;transform:translateY(-8px)}100%{opacity:1;transform:translateY(0)}}
+  @keyframes ssFadeUp{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:translateY(0)}}
+  .ss-scroll::-webkit-scrollbar{height:8px}
+  .ss-scroll::-webkit-scrollbar-thumb{background:#3a3a42;border-radius:8px}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#ffffff;color:#17171b;font-family:'Noto Sans','Noto Sans Devanagari',system-ui,sans-serif;position:relative;">
+
+  <!-- ============ HEADER REGION ============ -->
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+  <div style="{{ topbarStyle }}" onMouseLeave="{{ clearHover }}">
+
+    <!-- utility strip -->
+    <sc-if value="{{ showTopStrip }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#131316;color:#c9c9cf;font-size:12.5px;position:relative;z-index:60;">
+      <div style="max-width:1300px;margin:0 auto;padding:7px 26px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <span onClick="{{ goWeather }}" style="display:flex;align-items:center;gap:7px;cursor:pointer;"><span style="width:6px;height:6px;border-radius:50%;background:#f5820a;display:inline-block;"></span>{{ dateStr }}</span>
+          <span style="opacity:.3;">|</span>
+          <span onClick="{{ goWeather }}" style="cursor:pointer;">{{ weatherStr }}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:15px;">
+          <span onClick="{{ goGold }}" style="display:flex;align-items:center;gap:6px;cursor:pointer;"><span style="width:7px;height:7px;border-radius:50%;background:#e8b84b;display:inline-block;"></span>{{ goldStr }}</span>
+          <span onClick="{{ goSilver }}" style="display:flex;align-items:center;gap:6px;cursor:pointer;"><span style="width:7px;height:7px;border-radius:50%;background:#c7c7cc;display:inline-block;"></span>{{ silverStr }}</span>
+          <span style="opacity:.3;">|</span>
+          <span style="display:inline-flex;border:1px solid #3a3a42;border-radius:999px;overflow:hidden;">
+            <button onClick="{{ setEn }}" style="{{ enBtnStyle }}">EN</button>
+            <button onClick="{{ setHi }}" style="{{ hiBtnStyle }}">हिं</button>
+          </span>
+          <span style="opacity:.3;">|</span>
+          <button onClick="{{ goSignin }}" title="{{ accountLabel }}" style="display:flex;align-items:center;gap:7px;background:none;border:1px solid #3a3a42;border-radius:999px;padding:4px 12px 4px 6px;color:#d7d7dc;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:border-color .18s,color .18s,background .18s;" style-hover="border-color:#e5720a;color:#fff;background:#232329;">
+            <span style="width:21px;height:21px;border-radius:50%;background:#2c2c33;position:relative;flex:none;display:inline-block;">
+              <span style="position:absolute;top:4px;left:50%;transform:translateX(-50%);width:6.5px;height:6.5px;border-radius:50%;background:#f5820a;"></span>
+              <span style="position:absolute;bottom:3.5px;left:50%;transform:translateX(-50%);width:12px;height:6.5px;border-radius:6px 6px 0 0;background:#f5820a;"></span>
+            </span>
+            {{ accountLabel }}
+          </button>
+          <div ref="{{ setNetRef }}" onMouseEnter="{{ openNetwork }}" style="position:relative;display:flex;align-items:center;">
+            <button title="Our Network" style="display:grid;grid-template-columns:repeat(3,3px);grid-template-rows:repeat(3,3px);gap:3px;background:none;border:none;cursor:pointer;padding:6px;border-radius:8px;transition:background .18s;" style-hover="background:#232329;">
+              <span style="width:3px;height:3px;background:#f5820a;border-radius:1px;"></span><span style="width:3px;height:3px;background:#9a9aa2;border-radius:1px;"></span><span style="width:3px;height:3px;background:#9a9aa2;border-radius:1px;"></span>
+              <span style="width:3px;height:3px;background:#9a9aa2;border-radius:1px;"></span><span style="width:3px;height:3px;background:#9a9aa2;border-radius:1px;"></span><span style="width:3px;height:3px;background:#f5820a;border-radius:1px;"></span>
+              <span style="width:3px;height:3px;background:#9a9aa2;border-radius:1px;"></span><span style="width:3px;height:3px;background:#f5820a;border-radius:1px;"></span><span style="width:3px;height:3px;background:#9a9aa2;border-radius:1px;"></span>
+            </button>
+            <sc-if value="{{ networkOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:calc(100% + 13px);right:0;width:430px;background:#fff;border-radius:16px;box-shadow:0 28px 64px rgba(0,0,0,.3);overflow:hidden;color:#26262b;cursor:default;animation:ssDrop .18s ease;">
+                <div style="background:linear-gradient(102deg,#17171b 0%,#2a1a10 100%);padding:15px 20px;">
+                  <div style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:16.5px;font-weight:800;color:#fff;letter-spacing:.2px;">{{ t.networkTitle }}</div>
+                </div>
+                <div style="padding:16px 18px 18px;">
+                  <div style="font-size:10.5px;font-weight:800;letter-spacing:.7px;color:#8a8a90;margin-bottom:10px;">{{ t.ourBrands }}</div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                    <sc-for list="{{ networkBrands }}" as="b" hint-placeholder-count="8">
+                      <div onClick="{{ closeNetwork }}" style="display:flex;align-items:center;gap:9px;border:1px solid #ededed;border-radius:10px;padding:9px 12px;cursor:pointer;transition:border-color .15s,background .15s,transform .15s;" style-hover="border-color:#e5720a;background:#fff7ef;transform:translateY(-1px);">
+                        <span style="width:9px;height:9px;border-radius:50%;flex:none;background:{{ b.c }}"></span>
+                        <span style="font-size:13px;font-weight:600;color:#26262b;">{{ b.name }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="margin-top:16px;padding-top:15px;border-top:1px solid #f0f0f0;">
+                    <div style="font-size:10.5px;font-weight:800;letter-spacing:.7px;color:#8a8a90;margin-bottom:9px;">{{ t.getApp }}</div>
+                    <div style="display:flex;gap:8px;margin-bottom:16px;">
+                      <span onClick="{{ closeNetwork }}" style="flex:1;display:flex;align-items:center;gap:8px;background:#131316;border-radius:9px;padding:8px 12px;cursor:pointer;transition:transform .15s;" style-hover="transform:translateY(-1px);"><img src="https://cdn.simpleicons.org/googleplay/ffffff" alt="Google Play" style="width:16px;height:16px;flex:none;" /><span style="font-size:10.5px;line-height:1.15;color:#fff;">Get it on<br><b style="font-size:12.5px;">Google Play</b></span></span>
+                      <span onClick="{{ closeNetwork }}" style="flex:1;display:flex;align-items:center;gap:8px;background:#131316;border-radius:9px;padding:8px 12px;cursor:pointer;transition:transform .15s;" style-hover="transform:translateY(-1px);"><img src="https://cdn.simpleicons.org/apple/ffffff" alt="App Store" style="width:16px;height:16px;flex:none;" /><span style="font-size:10.5px;line-height:1.15;color:#fff;">Download on<br><b style="font-size:12.5px;">App Store</b></span></span>
+                    </div>
+                    <div style="font-size:10.5px;font-weight:800;letter-spacing:.7px;color:#8a8a90;margin-bottom:9px;">{{ t.followUs }}</div>
+                    <div style="display:flex;gap:8px;">
+                      <sc-for list="{{ socialList }}" as="s" hint-placeholder-count="5">
+                        <span onClick="{{ closeNetwork }}" style="width:34px;height:34px;border-radius:50%;background:#f2f2f4;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s;" style-hover="background:#ffe7d2;"><img src="{{ s.iconColor }}" alt="{{ s.label }}" style="width:16px;height:16px;" /></span>
+                      </sc-for>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </sc-if>
+
+    <!-- main bar -->
+    <div style="background:#fff;border-bottom:1px solid #ececec;">
+      <div style="max-width:1300px;margin:0 auto;padding:11px 26px;display:flex;align-items:center;justify-content:space-between;gap:24px;position:relative;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <button onClick="{{ openSidebar }}" title="Menu & Search" style="display:flex;align-items:center;gap:8px;background:none;border:1px solid #e6e6e6;border-radius:10px;cursor:pointer;padding:9px 11px;">
+            <span style="display:flex;flex-direction:column;gap:3.5px;">
+              <span style="width:19px;height:2px;background:#26262b;border-radius:2px;display:block;"></span>
+              <span style="width:19px;height:2px;background:#26262b;border-radius:2px;display:block;"></span>
+              <span style="width:19px;height:2px;background:#26262b;border-radius:2px;display:block;"></span>
+            </span>
+            <span style="width:15px;height:15px;border:2px solid #26262b;border-radius:50%;position:relative;display:inline-block;"><span style="position:absolute;width:7px;height:2px;background:#26262b;transform:rotate(45deg);bottom:-2px;right:-4px;border-radius:2px;"></span></span>
+          </button>
+          <img src="assets/salil-sandesh-logo.png" alt="Salil Sandesh" onClick="{{ goHome }}" style="{{ logoStyle }}" />
+        </div>
+        <sc-if value="{{ showFullNav }}" hint-placeholder-val="{{ true }}">
+        <nav style="display:flex;align-items:center;gap:23px;flex:1;justify-content:center;">
+          <sc-for list="{{ nav }}" as="item" hint-placeholder-count="8">
+            <button onClick="{{ item.onClick }}" onMouseEnter="{{ item.onEnter }}" style="{{ item.style }}" style-hover="color:#e5720a;">{{ item.label }}</button>
+          </sc-for>
+        </nav>
+        </sc-if>
+        <sc-if value="{{ articleCompact }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:50%;transform:translateX(-50%);max-width:52%;font-family:'Spectral','Noto Serif Devanagari',serif;font-size:18px;line-height:1.2;font-weight:700;color:#1a1a1f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;pointer-events:none;">{{ articleHeadline }}</div>
+        </sc-if>
+        <sc-if value="{{ showFullNav }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button onClick="{{ goSearch }}" style="display:flex;align-items:center;gap:7px;background:linear-gradient(90deg,#e5720a,#c4530a);color:#fff;border:none;border-radius:999px;padding:9px 17px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 2px 9px rgba(229,114,10,.32);">
+            <span style="font-size:14px;line-height:1;">✦</span>{{ t.askAi }}
+          </button>
+          <button onClick="{{ goVideos }}" style="display:flex;align-items:center;gap:7px;border:1px solid #e6c9c9;background:#fff;border-radius:999px;padding:8px 14px;color:#c0201f;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#d22b2b;display:inline-block;animation:ssPulse 1.5s infinite;"></span>{{ t.liveTv }}
+          </button>
+          <button onClick="{{ goEpaper }}" style="display:flex;align-items:center;gap:8px;background:#e5720a;color:#fff;border:none;border-radius:999px;padding:9px 18px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;"><span style="width:13px;height:15px;background:#fff;border-radius:2px;position:relative;display:inline-block;flex:none;"><span style="position:absolute;left:2px;right:2px;top:3px;height:1.5px;background:#e5720a;"></span><span style="position:absolute;left:2px;right:2px;top:6.5px;height:1.5px;background:#e5720a;"></span><span style="position:absolute;left:2px;right:4px;top:10px;height:1.5px;background:#e5720a;"></span></span>{{ t.epaper }}</button>
+        </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- MEGA MENU -->
+    <sc-if value="{{ hoveredNav }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;top:100%;left:0;right:0;background:#fff;border-top:1px solid #ececec;border-bottom:3px solid #e5720a;box-shadow:0 24px 40px rgba(0,0,0,.13);animation:ssDrop .2s ease;">
+        <div style="max-width:1300px;margin:0 auto;padding:26px;display:grid;grid-template-columns:230px 1fr;gap:40px;">
+          <div>
+            <div style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:22px;font-weight:700;color:#e5720a;margin-bottom:16px;">{{ hoveredLabel }}</div>
+            <div style="display:flex;flex-direction:column;gap:11px;">
+              <sc-for list="{{ megaSubcats }}" as="sc" hint-placeholder-count="6">
+                <button onClick="{{ goHome }}" style="text-align:left;background:none;border:none;font-family:inherit;font-size:15px;color:#333;cursor:pointer;padding:0;">{{ sc }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:800;letter-spacing:.8px;color:#e5720a;margin-bottom:14px;">{{ t.sectionLatest }}</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;">
+              <sc-for list="{{ megaStories }}" as="item" hint-placeholder-count="4">
+                <div onClick="{{ openArticle }}" style="cursor:pointer;">
+                  <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:6px;overflow:hidden;background:#eee;">
+                    <image-slot id="{{ item.megaSlot }}" shape="rect"></image-slot>
+                  </div>
+                  <h4 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:14px;line-height:1.3;font-weight:600;margin:9px 0 0;color:#1a1a1f;">{{ item.title }}</h4>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- trending bar (scrolls away under sticky header) -->
+  <sc-if value="{{ showTrendingBar }}" hint-placeholder-val="{{ true }}">
+  <div style="background:#fff;border-bottom:1px solid #ececec;position:relative;z-index:40;">
+    <div style="max-width:1300px;margin:0 auto;padding:9px 26px;display:flex;align-items:center;gap:20px;overflow-x:auto;" class="ss-scroll">
+      <span style="color:#e5720a;font-weight:800;font-size:12.5px;letter-spacing:.6px;white-space:nowrap;display:flex;align-items:center;gap:5px;">{{ t.trending }} <span style="font-size:11px;">▸</span></span>
+      <sc-for list="{{ trendingChips }}" as="chip" hint-placeholder-count="6">
+        <button onClick="{{ chip.onClick }}" style="background:none;border:none;font-family:inherit;font-size:13.5px;color:#3a3a40;font-weight:500;white-space:nowrap;cursor:pointer;padding:0;transition:color .16s;" style-hover="color:#e5720a;">{{ chip.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+  </sc-if>
+
+  <!-- SIDEBAR DRAWER -->
+    <div onClick="{{ closeSidebar }}" style="{{ drawerBackdropStyle }}">
+      <div onClick="{{ stop }}" style="{{ drawerPanelStyle }}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <img src="assets/salil-sandesh-logo.png" alt="Salil Sandesh" style="height:44px;width:auto;cursor:pointer;" onClick="{{ goHome }}" />
+          <button onClick="{{ closeSidebar }}" style="width:34px;height:34px;border-radius:50%;border:1px solid #e2e2e2;background:#fff;cursor:pointer;font-size:16px;color:#6a6a72;line-height:1;">✕</button>
+        </div>
+        <div style="display:flex;gap:8px;background:#fff;border:1px solid #e2e2e2;border-radius:10px;padding:11px 14px;align-items:center;margin-bottom:22px;">
+          <span style="width:15px;height:15px;border:2px solid #9a9aa2;border-radius:50%;position:relative;flex:none;display:inline-block;"><span style="position:absolute;width:7px;height:2px;background:#9a9aa2;transform:rotate(45deg);bottom:-2px;right:-4px;border-radius:2px;"></span></span>
+          <input value="{{ resultQuery }}" onInput="{{ onResultQuery }}" placeholder="{{ t.menuSearch }}" style="flex:1;border:none;outline:none;font-family:inherit;font-size:14px;color:#26262b;background:transparent;" />
+          <button onClick="{{ doSidebarSearch }}" style="background:#e5720a;color:#fff;border:none;border-radius:7px;padding:6px 12px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;">Go</button>
+        </div>
+        <div style="font-size:12px;font-weight:800;letter-spacing:.6px;color:#e5720a;margin-bottom:12px;">{{ t.chooseDest }}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+          <sc-for list="{{ sidebarTopics.dest }}" as="d" hint-placeholder-count="4">
+            <span onClick="{{ closeSidebar }}" style="display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:#26262b;cursor:pointer;"><span style="width:7px;height:7px;border-radius:50%;background:#e5720a;display:inline-block;"></span>{{ d }}</span>
+          </sc-for>
+        </div>
+        <div style="font-size:12px;font-weight:800;letter-spacing:.6px;color:#8a8a90;margin-bottom:12px;border-top:1px solid #ececec;padding-top:16px;">{{ t.newsUpdates }}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin-bottom:22px;">
+          <sc-for list="{{ sidebarTopics.updates }}" as="u" hint-placeholder-count="12">
+            <span onClick="{{ doSidebarSearch }}" style="font-size:14px;font-weight:600;color:#b0560a;cursor:pointer;">{{ u }}</span>
+          </sc-for>
+        </div>
+        <div style="font-size:12px;font-weight:800;letter-spacing:.6px;color:#8a8a90;margin-bottom:12px;border-top:1px solid #ececec;padding-top:16px;">{{ t.featuredL }}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin-bottom:22px;">
+          <sc-for list="{{ sidebarTopics.featured }}" as="u" hint-placeholder-count="5">
+            <span onClick="{{ doSidebarSearch }}" style="font-size:14px;font-weight:600;color:#b0560a;cursor:pointer;">{{ u }}</span>
+          </sc-for>
+        </div>
+        <div style="font-size:12px;font-weight:800;letter-spacing:.6px;color:#8a8a90;margin-bottom:12px;border-top:1px solid #ececec;padding-top:16px;">{{ t.moreLinks }}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin-bottom:22px;">
+          <sc-for list="{{ sidebarTopics.more }}" as="u" hint-placeholder-count="10">
+            <span onClick="{{ doSidebarSearch }}" style="font-size:14px;font-weight:600;color:#b0560a;cursor:pointer;">{{ u }}</span>
+          </sc-for>
+        </div>
+        <div style="font-size:12px;font-weight:800;letter-spacing:.6px;color:#8a8a90;margin-bottom:14px;border-top:1px solid #ececec;padding-top:16px;">{{ t.followUs }}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;">
+          <sc-for list="{{ socialList }}" as="s" hint-placeholder-count="8">
+            <span style="display:flex;align-items:center;gap:10px;font-size:14px;color:#26262b;cursor:pointer;"><img src="{{ s.iconColor }}" alt="{{ s.label }}" style="width:18px;height:18px;" />{{ s.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+  <!-- ==================== HOME ==================== -->
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <main>
+    <div style="max-width:1300px;margin:0 auto;padding:26px 26px 8px;display:grid;grid-template-columns:1fr 336px;gap:34px;">
+      <!-- LEFT -->
+      <div>
+        <!-- hero -->
+        <article onClick="{{ openArticle }}" style="cursor:pointer;border-bottom:1px solid #eee;padding-bottom:24px;margin-bottom:24px;">
+          <div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#eee;">
+            <image-slot id="ss-hero" shape="rect"></image-slot>
+            <span style="position:absolute;top:14px;left:14px;background:#d22b2b;color:#fff;font-size:11px;font-weight:800;letter-spacing:.6px;padding:5px 11px;border-radius:4px;">{{ hero.cat }}</span>
+          </div>
+          <h1 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:37px;line-height:1.14;font-weight:800;margin:18px 0 10px;letter-spacing:-.5px;">{{ hero.title }}</h1>
+          <p style="font-size:16.5px;line-height:1.55;color:#4a4a52;margin:0 0 12px;">{{ hero.excerpt }}</p>
+          <div style="font-size:12.5px;color:#8a8a90;display:flex;gap:10px;align-items:center;"><span style="color:#e5720a;font-weight:700;">{{ hero.author }}</span><span>•</span><span>{{ hero.time }}</span></div>
+        </article>
+
+        <!-- 3 headline stories -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;border-bottom:1px solid #eee;padding-bottom:26px;margin-bottom:26px;">
+          <sc-for list="{{ heroSide }}" as="item" hint-placeholder-count="3">
+            <article onClick="{{ openArticle }}" style="cursor:pointer;">
+              <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:7px;overflow:hidden;background:#eee;margin-bottom:11px;">
+                <image-slot id="{{ item.slot }}" shape="rect"></image-slot>
+              </div>
+              <span style="font-size:11px;font-weight:800;letter-spacing:.5px;color:{{ item.color }}">{{ item.cat }}</span>
+              <h3 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:16.5px;line-height:1.28;font-weight:700;margin:6px 0 0;">{{ item.title }}</h3>
+            </article>
+          </sc-for>
+        </div>
+
+        <!-- From India section -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+          <h2 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:24px;font-weight:800;margin:0;display:flex;align-items:center;gap:11px;"><span style="width:5px;height:24px;background:#e5720a;border-radius:2px;display:inline-block;"></span>{{ t.fromIndia }}</h2>
+          <button onClick="{{ goIndia }}" style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:700;color:#e5720a;cursor:pointer;">{{ t.viewAll }} →</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;">
+          <sc-for list="{{ indiaCards }}" as="item" hint-placeholder-count="3">
+            <article onClick="{{ openArticle }}" style="cursor:pointer;">
+              <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:7px;overflow:hidden;background:#eee;margin-bottom:11px;">
+                <image-slot id="{{ item.slot }}" shape="rect"></image-slot>
+                <span style="position:absolute;top:9px;left:9px;background:rgba(19,19,22,.82);color:#fff;font-size:10px;font-weight:800;letter-spacing:.4px;padding:3px 8px;border-radius:3px;">{{ item.cat }}</span>
+              </div>
+              <h3 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:16px;line-height:1.3;font-weight:700;margin:0 0 6px;">{{ item.title }}</h3>
+              <span style="font-size:12px;color:#8a8a90;">{{ item.time }}</span>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside>
+        <!-- watch live -->
+        <div style="border:1px solid #ececec;border-radius:10px;overflow:hidden;margin-bottom:22px;">
+          <div style="padding:12px 15px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f0f0f0;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#d22b2b;animation:ssPulse 1.5s infinite;"></span>
+            <span style="font-family:'Spectral',serif;font-size:18px;font-weight:700;">{{ t.watchLive }}</span>
+          </div>
+          <div style="position:relative;width:100%;aspect-ratio:16/9;background:#111;">
+            <image-slot id="ss-live" shape="rect"></image-slot>
+            <span style="position:absolute;top:10px;left:10px;background:#d22b2b;color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:3px;">● {{ t.liveNow }}</span>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+              <div style="width:54px;height:54px;border-radius:50%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;"><span style="width:0;height:0;border-left:15px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px;"></span></div>
+            </div>
+          </div>
+          <div style="padding:11px 15px;font-size:13.5px;font-weight:600;color:#26262b;">{{ liveCaption }}</div>
+        </div>
+
+        <!-- market watch -->
+        <div style="border:1px solid #ececec;border-radius:10px;overflow:hidden;margin-bottom:22px;">
+          <div style="background:#131316;color:#fff;padding:11px 15px;font-family:'Spectral',serif;font-size:16px;font-weight:700;display:flex;justify-content:space-between;align-items:center;">{{ t.marketWatch }} <span style="font-size:11px;font-weight:600;color:#9a9aa2;">LIVE</span></div>
+          <sc-for list="{{ market }}" as="m" hint-placeholder-count="5">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 15px;border-bottom:1px solid #f2f2f2;">
+              <span style="font-size:13px;font-weight:700;color:#26262b;">{{ m.n }}</span>
+              <span style="display:flex;align-items:center;gap:10px;"><span style="font-size:13px;color:#3a3a40;">{{ m.v }}</span><span style="font-size:12px;font-weight:700;color:{{ m.chColor }}">{{ m.ch }}</span></span>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- latest list -->
+        <div style="border:1px solid #ececec;border-radius:10px;overflow:hidden;">
+          <div style="background:#e5720a;color:#fff;padding:11px 15px;font-family:'Spectral',serif;font-size:16px;font-weight:700;">{{ t.latestNews }}</div>
+          <sc-for list="{{ latestList }}" as="item" hint-placeholder-count="5">
+            <div onClick="{{ openArticle }}" style="display:flex;gap:12px;padding:13px 15px;border-bottom:1px solid #f2f2f2;cursor:pointer;">
+              <span style="font-family:'Spectral',serif;font-size:22px;font-weight:800;color:#e5c19a;line-height:1;">{{ item.rank }}</span>
+              <h4 style="font-size:14px;line-height:1.35;font-weight:600;margin:0;color:#26262b;">{{ item.title }}</h4>
+            </div>
+          </sc-for>
+        </div>
+      </aside>
+    </div>
+
+    <!-- WORLD BAND -->
+    <div style="background:#f6f6f4;padding:34px 0;margin-top:16px;">
+      <div style="max-width:1300px;margin:0 auto;padding:0 26px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+          <h2 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:24px;font-weight:800;margin:0;display:flex;align-items:center;gap:11px;"><span style="width:5px;height:24px;background:#2f77d6;border-radius:2px;display:inline-block;"></span>{{ t.fromWorld }}</h2>
+          <button onClick="{{ goWorld }}" style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:700;color:#e5720a;cursor:pointer;">{{ t.viewAll }} →</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px;">
+          <sc-for list="{{ worldCards }}" as="item" hint-placeholder-count="4">
+            <article onClick="{{ openArticle }}" style="cursor:pointer;background:#fff;border-radius:9px;overflow:hidden;border:1px solid #ececec;">
+              <div style="position:relative;width:100%;aspect-ratio:16/10;background:#eee;"><image-slot id="{{ item.slot }}" shape="rect"></image-slot></div>
+              <div style="padding:13px 14px 15px;">
+                <span style="font-size:10.5px;font-weight:800;letter-spacing:.4px;color:{{ item.color }}">{{ item.cat }}</span>
+                <h3 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:15.5px;line-height:1.3;font-weight:700;margin:6px 0 0;">{{ item.title }}</h3>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEOS BAND (dark) -->
+    <div style="background:#0e0e11;padding:36px 0;">
+      <div style="max-width:1300px;margin:0 auto;padding:0 26px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <h2 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:24px;font-weight:800;margin:0;color:#fff;display:flex;align-items:center;gap:11px;"><span style="width:5px;height:24px;background:#e5720a;border-radius:2px;display:inline-block;"></span>{{ t.videosLabel }}</h2>
+          <button onClick="{{ goVideos }}" style="background:none;border:1px solid #3a3a42;border-radius:999px;padding:7px 16px;font-family:inherit;font-size:13px;font-weight:700;color:#fff;cursor:pointer;">{{ t.viewAll }} →</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;">
+          <sc-for list="{{ videosHome }}" as="v" hint-placeholder-count="4">
+            <article onClick="{{ goVideos }}" style="cursor:pointer;">
+              <div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#1a1a1f;">
+                <image-slot id="{{ v.slot }}" shape="rect"></image-slot>
+                <span style="position:absolute;bottom:9px;right:9px;background:rgba(0,0,0,.8);color:#fff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:3px;">▸ {{ v.dur }}</span>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;"><div style="width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;"><span style="width:0;height:0;border-left:12px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px;"></span></div></div>
+              </div>
+              <h3 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:15px;line-height:1.3;font-weight:600;margin:11px 0 0;color:#f0f0f2;">{{ v.title }}</h3>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPINION -->
+    <div style="max-width:1300px;margin:0 auto;padding:36px 26px;">
+      <h2 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:24px;font-weight:800;margin:0 0 18px;display:flex;align-items:center;gap:11px;"><span style="width:5px;height:24px;background:#1f9d6b;border-radius:2px;display:inline-block;"></span>{{ t.opinionLabel }}</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+        <sc-for list="{{ opinionCards }}" as="o" hint-placeholder-count="3">
+          <article onClick="{{ openArticle }}" style="cursor:pointer;border-left:3px solid #1f9d6b;padding-left:18px;">
+            <h3 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:19px;line-height:1.3;font-weight:700;margin:0 0 14px;font-style:italic;">{{ o.title }}</h3>
+            <div style="display:flex;align-items:center;gap:11px;">
+              <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:#eee;"><image-slot id="{{ o.slot }}" shape="circle"></image-slot></div>
+              <div><div style="font-size:13.5px;font-weight:700;color:#26262b;">{{ o.author }}</div><div style="font-size:11.5px;color:#8a8a90;">{{ o.role }}</div></div>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ==================== ARTICLE ==================== -->
+  <sc-if value="{{ isArticle }}" hint-placeholder-val="{{ false }}">
+  <main style="background:#fafafa;">
+    <div style="max-width:1300px;margin:0 auto;padding:16px 26px;font-size:12.5px;color:#8a8a90;">
+      <span onClick="{{ goHome }}" style="cursor:pointer;">{{ t.home }}</span> <span style="color:#ccc;">›</span> <span onClick="{{ goIndia }}" style="cursor:pointer;">{{ t.india }}</span> <span style="color:#ccc;">›</span> <span style="color:#26262b;">{{ article.cat }}</span>
+    </div>
+    <div style="max-width:1300px;margin:0 auto;padding:8px 26px 50px;display:grid;grid-template-columns:250px 1fr 300px;gap:34px;align-items:start;">
+      <!-- related left -->
+      <aside style="position:sticky;top:74px;align-self:start;max-height:calc(100vh - 88px);overflow-y:auto;" class="ss-scroll">
+        <h3 style="font-family:'Spectral',serif;font-size:19px;font-weight:700;margin:0 0 14px;border-bottom:2px solid #e5720a;padding-bottom:8px;">{{ t.relatedNews }}</h3>
+        <sc-for list="{{ article.related }}" as="item" hint-placeholder-count="3">
+          <div onClick="{{ openArticle }}" style="cursor:pointer;padding:13px 0;border-bottom:1px solid #ececec;">
+            <h4 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:15px;line-height:1.35;font-weight:600;margin:0;color:#26262b;">{{ item.title }}</h4>
+          </div>
+        </sc-for>
+        <h3 style="font-family:'Spectral',serif;font-size:19px;font-weight:700;margin:26px 0 14px;border-bottom:2px solid #e5720a;padding-bottom:8px;">{{ t.trendingNews }}</h3>
+        <sc-for list="{{ latestList }}" as="item" hint-placeholder-count="4">
+          <div onClick="{{ openArticle }}" style="cursor:pointer;display:flex;gap:11px;padding:11px 0;border-bottom:1px solid #ececec;">
+            <span style="font-family:'Spectral',serif;font-size:20px;font-weight:800;color:#e5c19a;line-height:1;">{{ item.rank }}</span>
+            <h4 style="font-size:13.5px;line-height:1.35;font-weight:600;margin:0;color:#26262b;">{{ item.title }}</h4>
+          </div>
+        </sc-for>
+      </aside>
+
+      <!-- article body -->
+      <article style="background:#fff;border-radius:12px;padding:34px 40px 40px;box-shadow:0 1px 3px rgba(0,0,0,.05);">
+        <span style="display:inline-block;background:#d22b2b;color:#fff;font-size:11px;font-weight:800;letter-spacing:.6px;padding:5px 11px;border-radius:4px;margin-bottom:16px;">{{ article.cat }}</span>
+        <h1 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:40px;line-height:1.1;font-weight:800;margin:0 0 16px;letter-spacing:-.5px;">{{ article.title }}</h1>
+        <p style="font-size:19px;line-height:1.5;color:#3a3a42;margin:0 0 22px;font-weight:500;">{{ article.excerpt }}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;font-size:13px;color:#6a6a72;padding-bottom:18px;border-bottom:1px solid #eee;">
+          <span>{{ t.reportedBy }} <b style="color:#e5720a;">{{ article.author }}</b></span>
+          <span style="color:#ddd;">|</span>
+          <span>{{ t.editedBy }} <b style="color:#26262b;">{{ article.editor }}</b></span>
+          <span style="color:#ddd;">|</span>
+          <span>{{ article.dateStr }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0 22px;">
+          <span style="font-size:13px;color:#6a6a72;">{{ t.readTime }}: <b>{{ article.readTime }}</b></span>
+          <div style="display:flex;gap:9px;">
+            <button style="border:1px solid #e2e2e2;background:#fff;border-radius:999px;padding:7px 15px;font-family:inherit;font-size:12.5px;font-weight:600;color:#26262b;cursor:pointer;">↗ {{ t.share }}</button>
+            <button style="border:1px solid #e2e2e2;background:#fff;border-radius:999px;padding:7px 12px;font-family:inherit;font-size:12.5px;cursor:pointer;">⎘</button>
+          </div>
+        </div>
+
+        <div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#eee;margin-bottom:10px;"><image-slot id="ss-article-hero" shape="rect"></image-slot></div>
+        <div style="font-size:12px;color:#9a9aa2;margin-bottom:24px;font-style:italic;">{{ article.caption }}</div>
+
+        <sc-for list="{{ article.bodyTop }}" as="p" hint-placeholder-count="2">
+          <p style="font-size:17.5px;line-height:1.72;color:#26262b;margin:0 0 20px;">{{ p }}</p>
+        </sc-for>
+
+        <!-- pull quote -->
+        <blockquote style="margin:28px 0;padding:6px 0 6px 26px;border-left:4px solid #e5720a;">
+          <p style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:24px;line-height:1.4;font-weight:600;font-style:italic;margin:0 0 10px;color:#1a1a1f;">{{ article.pullQuote }}</p>
+          <cite style="font-size:13.5px;color:#8a8a90;font-style:normal;font-weight:700;">{{ article.pullAuthor }}</cite>
+        </blockquote>
+
+        <!-- embedded video card -->
+        <div style="border:1px solid #ececec;border-radius:10px;overflow:hidden;margin:26px 0;">
+          <div style="position:relative;width:100%;aspect-ratio:16/9;background:#111;">
+            <image-slot id="ss-article-embed" shape="rect"></image-slot>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;"><div style="width:56px;height:56px;border-radius:50%;background:rgba(213,43,43,.9);display:flex;align-items:center;justify-content:center;"><span style="width:0;height:0;border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px;"></span></div></div>
+          </div>
+          <div style="padding:11px 15px;font-size:12.5px;color:#8a8a90;display:flex;align-items:center;gap:8px;"><span style="font-weight:800;color:#d22b2b;">▶ WATCH</span> {{ article.embedCaption }}</div>
+        </div>
+
+        <sc-for list="{{ article.bodyBottom }}" as="p" hint-placeholder-count="2">
+          <p style="font-size:17.5px;line-height:1.72;color:#26262b;margin:0 0 20px;">{{ p }}</p>
+        </sc-for>
+
+        <!-- tags -->
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid #eee;">
+          <div style="font-size:12px;font-weight:800;letter-spacing:.5px;color:#8a8a90;margin-bottom:11px;">{{ t.tags }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;">
+            <sc-for list="{{ article.tags }}" as="tag" hint-placeholder-count="4">
+              <span style="background:#f2f2f2;border-radius:6px;padding:6px 13px;font-size:13px;font-weight:600;color:#3a3a40;cursor:pointer;">{{ tag }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </article>
+
+      <!-- right sidebar -->
+      <aside style="position:sticky;top:74px;align-self:start;max-height:calc(100vh - 88px);overflow-y:auto;" class="ss-scroll">
+        <div style="border:1px solid #ececec;border-radius:10px;padding:18px 18px 20px;margin-bottom:22px;background:#fff;">
+          <h3 style="font-family:'Spectral',serif;font-size:18px;font-weight:700;margin:0 0 14px;">{{ t.quickLinks }} ›</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+            <sc-for list="{{ quickLinks }}" as="q" hint-placeholder-count="6">
+              <span onClick="{{ goHome }}" style="background:#f7f7f8;border-radius:7px;padding:9px 11px;font-size:12.5px;font-weight:600;color:#26262b;cursor:pointer;text-align:center;">{{ q }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="border:1px solid #ececec;border-radius:10px;overflow:hidden;background:#fff;">
+          <div style="background:#131316;color:#fff;padding:11px 15px;font-family:'Spectral',serif;font-size:16px;font-weight:700;">{{ t.marketWatch }}</div>
+          <sc-for list="{{ market }}" as="m" hint-placeholder-count="5">
+            <div style="display:flex;justify-content:space-between;padding:10px 15px;border-bottom:1px solid #f2f2f2;">
+              <span style="font-size:12.5px;font-weight:700;color:#26262b;">{{ m.n }}</span>
+              <span style="font-size:12px;font-weight:700;color:{{ m.chColor }}">{{ m.ch }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </aside>
+    </div>
+
+    <!-- more stories -->
+    <div style="background:#fff;border-top:1px solid #eee;padding:34px 0;">
+      <div style="max-width:1300px;margin:0 auto;padding:0 26px;">
+        <h2 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:23px;font-weight:800;margin:0 0 18px;">{{ t.moreStories }}</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+          <sc-for list="{{ article.more }}" as="item" hint-placeholder-count="3">
+            <article onClick="{{ openArticle }}" style="cursor:pointer;">
+              <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:8px;overflow:hidden;background:#eee;margin-bottom:11px;"><image-slot id="{{ item.moreSlot }}" shape="rect"></image-slot></div>
+              <span style="font-size:11px;font-weight:800;color:{{ item.color }}">{{ item.cat }}</span>
+              <h3 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:17px;line-height:1.3;font-weight:700;margin:6px 0 0;">{{ item.title }}</h3>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ==================== VIDEOS (dark) ==================== -->
+  <sc-if value="{{ isVideos }}" hint-placeholder-val="{{ false }}">
+  <main style="background:#08080b;color:#f0f0f2;min-height:82vh;">
+    <div style="max-width:1360px;margin:0 auto;display:grid;grid-template-columns:212px 1fr;gap:0;align-items:start;">
+      <aside style="padding:28px 16px;position:sticky;top:127px;align-self:start;max-height:calc(100vh - 131px);overflow-y:auto;" class="ss-scroll">
+        <div style="font-family:'Spectral',serif;font-size:22px;font-weight:800;margin:0 0 20px;padding-left:8px;color:#fff;">{{ t.videos }}</div>
+        <sc-for list="{{ videoNav }}" as="vn" hint-placeholder-count="5">
+          <div onClick="{{ vn.onClick }}" style="{{ vn.style }}"><span style="width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.6;flex:none;"></span>{{ vn.label }}</div>
+        </sc-for>
+      </aside>
+      <div style="min-width:0;">
+        <!-- SHORTS (reels) -->
+        <sc-if value="{{ vtShorts }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:22px 0 12px;text-align:center;"><h1 style="font-family:'Spectral',serif;font-size:26px;font-weight:800;margin:0;color:#fff;">Salil Shorts</h1></div>
+          <div class="ss-scroll" style="height:80vh;overflow-y:auto;scroll-snap-type:y mandatory;display:flex;flex-direction:column;align-items:center;">
+            <sc-for list="{{ shorts }}" as="sh" hint-placeholder-count="5">
+              <div style="scroll-snap-align:start;flex:none;position:relative;width:420px;max-width:92vw;height:80vh;border-radius:14px;overflow:hidden;margin-bottom:14px;background:#111;">
+                <image-slot id="{{ sh.slot }}" shape="rect"></image-slot>
+                <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25) 0%,transparent 28% 58%,rgba(0,0,0,.78) 100%);pointer-events:none;"></div>
+                <div style="position:absolute;left:16px;right:78px;bottom:22px;">
+                  <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;">{{ sh.author }}</div>
+                  <div style="font-size:15px;line-height:1.35;color:#fff;margin-bottom:7px;">{{ sh.title }}</div>
+                  <div style="font-size:13px;color:#f2a33c;font-weight:700;">{{ sh.tag }}</div>
+                </div>
+                <div style="position:absolute;right:14px;bottom:26px;display:flex;flex-direction:column;gap:18px;align-items:center;">
+                  <div style="text-align:center;"><div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;">♥</div><div style="font-size:11px;color:#fff;margin-top:4px;">{{ sh.likes }}</div></div>
+                  <div style="text-align:center;"><div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;"><div style="width:20px;height:15px;border:2px solid #fff;border-radius:6px 6px 6px 2px;"></div></div><div style="font-size:11px;color:#fff;margin-top:4px;">{{ sh.comments }}</div></div>
+                  <div style="text-align:center;"><div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;">↗</div><div style="font-size:11px;color:#fff;margin-top:4px;">Share</div></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- NON-SHORTS -->
+        <sc-if value="{{ vtNotShorts }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative;height:440px;overflow:hidden;">
+            <image-slot id="ss-vfeat" shape="rect"></image-slot>
+            <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,8,11,.92) 0%,rgba(8,8,11,.55) 45%,rgba(8,8,11,.2) 100%);pointer-events:none;"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(0deg,#08080b 0%,transparent 32%);pointer-events:none;"></div>
+            <div style="position:absolute;left:34px;bottom:40px;max-width:560px;">
+              <span style="display:inline-block;background:#e5720a;color:#fff;font-size:11px;font-weight:800;letter-spacing:.6px;padding:5px 11px;border-radius:4px;margin-bottom:14px;">FEATURED</span>
+              <h1 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:38px;line-height:1.08;font-weight:800;margin:0 0 12px;color:#fff;">{{ featured.title }}</h1>
+              <p style="font-size:14px;color:#c9c9cf;margin:0 0 18px;max-width:480px;">{{ t.videosSub }}</p>
+              <div style="display:flex;gap:12px;">
+                <button style="display:flex;align-items:center;gap:9px;background:#fff;color:#111;border:none;border-radius:8px;padding:11px 24px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;"><span style="width:0;height:0;border-left:13px solid #111;border-top:8px solid transparent;border-bottom:8px solid transparent;"></span>Play</button>
+                <button style="background:rgba(255,255,255,.2);color:#fff;border:none;border-radius:8px;padding:11px 22px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;">ⓘ More Info</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding:8px 30px 40px;">
+            <sc-if value="{{ vtLatest }}" hint-placeholder-val="{{ true }}">
+              <sc-for list="{{ videoRows }}" as="row" hint-placeholder-count="3">
+                <div style="margin:26px 0 6px;"><h2 style="font-family:'Spectral',serif;font-size:20px;font-weight:700;margin:0;color:#fff;">{{ row.title }}</h2></div>
+                <div class="ss-scroll" style="display:flex;gap:14px;overflow-x:auto;padding:6px 0 16px;">
+                  <sc-for list="{{ row.items }}" as="v" hint-placeholder-count="6">
+                    <div style="min-width:256px;width:256px;cursor:pointer;transition:transform .2s;" style-hover="transform:scale(1.05);">
+                      <div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#1a1a1f;">
+                        <image-slot id="{{ v.slot }}" shape="rect"></image-slot>
+                        <span style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.82);color:#fff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:3px;">{{ v.dur }}</span>
+                      </div>
+                      <h3 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:14px;line-height:1.3;font-weight:600;margin:9px 0 0;color:#dcdce0;">{{ v.title }}</h3>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </sc-if>
+
+            <sc-if value="{{ vtLive }}" hint-placeholder-val="{{ false }}">
+              <div style="margin:26px 0 16px;"><h2 style="font-family:'Spectral',serif;font-size:20px;font-weight:700;margin:0;color:#fff;">Live Channels</h2></div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+                <sc-for list="{{ liveChannels }}" as="c" hint-placeholder-count="6">
+                  <div style="cursor:pointer;position:relative;border-radius:10px;overflow:hidden;background:#1a1a1f;">
+                    <div style="position:relative;width:100%;aspect-ratio:16/9;"><image-slot id="{{ c.slot }}" shape="rect"></image-slot>
+                      <span style="position:absolute;top:9px;left:9px;background:#d22b2b;color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:3px;">● LIVE</span>
+                      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;"><div style="width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;"><span style="width:0;height:0;border-left:13px solid #fff;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px;"></span></div></div>
+                    </div>
+                    <div style="padding:11px 13px;font-size:14px;font-weight:700;color:#f0f0f2;">{{ c.name }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ vtCat }}" hint-placeholder-val="{{ false }}">
+              <div style="margin:26px 0 16px;"><h2 style="font-family:'Spectral',serif;font-size:20px;font-weight:700;margin:0;color:#fff;">{{ t.categoriesLabel }}</h2></div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+                <sc-for list="{{ videoCats }}" as="c" hint-placeholder-count="6">
+                  <div style="cursor:pointer;position:relative;height:150px;border-radius:12px;overflow:hidden;">
+                    <image-slot id="{{ c.slot }}" shape="rect"></image-slot>
+                    <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.62),rgba(0,0,0,.12));pointer-events:none;"></div>
+                    <div style="position:absolute;left:16px;bottom:14px;pointer-events:none;"><span style="display:block;width:28px;height:4px;border-radius:2px;background:{{ c.c }};margin-bottom:8px;"></span><div style="font-family:'Spectral',serif;font-size:20px;font-weight:800;color:#fff;">{{ c.name }}</div></div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ vtTop }}" hint-placeholder-val="{{ false }}">
+              <div style="margin:26px 0 16px;"><h2 style="font-family:'Spectral',serif;font-size:20px;font-weight:700;margin:0;color:#fff;">{{ t.topVideos }}</h2></div>
+              <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
+                <sc-for list="{{ videosTopBig }}" as="v" hint-placeholder-count="6">
+                  <div style="cursor:pointer;display:flex;gap:14px;align-items:center;">
+                    <span style="font-family:'Spectral',serif;font-size:40px;font-weight:800;color:#3a3a42;flex:none;width:34px;text-align:center;">{{ v.rank }}</span>
+                    <div style="position:relative;width:170px;flex:none;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#1a1a1f;"><image-slot id="{{ v.slot }}" shape="rect"></image-slot><span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,.82);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px;">{{ v.dur }}</span></div>
+                    <h3 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:15px;line-height:1.3;font-weight:600;margin:0;color:#e8e8ea;">{{ v.title }}</h3>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ==================== AI SEARCH ==================== -->
+  <sc-if value="{{ isSearch }}" hint-placeholder-val="{{ false }}">
+  <main style="background:linear-gradient(180deg,#fbfbf9 0%,#f4f6f2 100%);min-height:80vh;">
+    <div style="max-width:840px;margin:0 auto;padding:50px 26px 70px;">
+      <div style="text-align:center;margin-bottom:34px;">
+        <div style="display:inline-flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <span style="width:44px;height:44px;border-radius:12px;background:#131316;color:#e5720a;display:flex;align-items:center;justify-content:center;font-family:'Spectral',serif;font-size:26px;font-weight:800;">✦</span>
+        </div>
+        <h1 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:34px;font-weight:800;margin:0 0 8px;letter-spacing:-.5px;">{{ t.askHeading }}</h1>
+        <p style="font-size:15.5px;color:#6a6a72;margin:0;max-width:520px;margin:0 auto;">{{ t.askSub }}</p>
+      </div>
+
+      <div style="display:flex;gap:10px;background:#fff;border:1px solid #e4e4e7;border-radius:999px;padding:8px 8px 8px 22px;box-shadow:0 6px 20px rgba(0,0,0,.06);margin-bottom:34px;">
+        <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="{{ t.askPh }}" style="flex:1;border:none;outline:none;font-family:inherit;font-size:16px;color:#26262b;background:transparent;" />
+        <button onClick="{{ ask }}" style="width:44px;height:44px;flex:none;border-radius:50%;background:#e5720a;color:#fff;border:none;font-size:19px;cursor:pointer;">→</button>
+      </div>
+
+      <sc-if value="{{ answered }}" hint-placeholder-val="{{ true }}">
+        <div style="background:#fff;border:1px solid #ececec;border-radius:16px;padding:32px 34px;box-shadow:0 4px 18px rgba(0,0,0,.05);">
+          <sc-for list="{{ aiParas }}" as="p" hint-placeholder-count="3">
+            <p style="font-size:16.5px;line-height:1.68;color:#26262b;margin:0 0 18px;">{{ p }}</p>
+          </sc-for>
+
+          <div style="display:flex;flex-direction:column;gap:9px;margin:6px 0 22px;">
+            <sc-for list="{{ aiBullets }}" as="b" hint-placeholder-count="3">
+              <div style="display:flex;gap:11px;font-size:16px;line-height:1.55;color:#26262b;"><span style="color:#e5720a;font-weight:800;flex:none;">•</span><span><b>{{ b.h }}</b> {{ b.t }}</span></div>
+            </sc-for>
+          </div>
+
+          <!-- related content -->
+          <div style="background:#f7f7f5;border-radius:12px;padding:18px 20px;margin:10px 0 8px;">
+            <div style="font-size:14px;font-weight:800;color:#26262b;margin-bottom:14px;">{{ t.relatedContent }}</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <sc-for list="{{ searchRelated }}" as="item" hint-placeholder-count="2">
+                <div onClick="{{ openArticle }}" style="cursor:pointer;display:flex;gap:12px;align-items:center;">
+                  <div style="width:74px;height:54px;flex:none;border-radius:7px;overflow:hidden;background:#eee;"><image-slot id="{{ item.searchSlot }}" shape="rect"></image-slot></div>
+                  <h4 style="font-size:13.5px;line-height:1.35;font-weight:600;margin:0;color:#26262b;">{{ item.title }}</h4>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:14px;padding:16px 0 4px;color:#9a9aa2;font-size:18px;">
+            <span style="cursor:pointer;">⎘</span><span style="cursor:pointer;">↻</span><span style="cursor:pointer;">↗</span>
+          </div>
+
+          <!-- follow ups -->
+          <div style="border-top:1px solid #eee;margin-top:8px;padding-top:18px;">
+            <div style="font-size:14px;font-weight:800;color:#26262b;margin-bottom:6px;">{{ t.followups }}</div>
+            <sc-for list="{{ followups }}" as="f" hint-placeholder-count="3">
+              <div onClick="{{ ask }}" style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #f2f2f2;cursor:pointer;">
+                <span style="color:#e5720a;font-size:16px;">→</span>
+                <span style="font-size:15.5px;color:#3a3a42;">{{ f }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="text-align:center;font-size:12px;color:#a0a0a6;margin-top:20px;">{{ t.aiNote }}</div>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ==================== CATEGORY ==================== -->
+  <sc-if value="{{ isCategory }}" hint-placeholder-val="{{ false }}">
+  <main>
+    <!-- banner (themed per section) -->
+    <div style="{{ bannerStyle }}">
+      <sc-if value="{{ catHasVideo }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;">
+        <video src="{{ catVideo }}" autoplay loop muted playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></video>
+        <div style="position:absolute;inset:0;background:{{ bannerVeil }};"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,transparent 35%,rgba(0,0,0,.28) 100%);"></div>
+      </div>
+      </sc-if>
+      <div style="max-width:1300px;margin:0 auto;padding:0 26px;position:relative;">
+        <div style="font-size:12.5px;color:rgba(255,255,255,.72);margin-bottom:10px;"><span onClick="{{ goHome }}" style="cursor:pointer;">{{ t.home }}</span> › <span style="font-weight:700;">{{ catLabel }}</span></div>
+        <h1 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:46px;font-weight:800;margin:0 0 12px;letter-spacing:-1px;">{{ catLabel }}</h1>
+        <div style="width:66px;height:5px;border-radius:3px;background:{{ catAccent }};margin-bottom:16px;"></div>
+        <p style="font-size:15px;color:rgba(255,255,255,.85);margin:0 0 20px;max-width:640px;">{{ catSub }}</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <sc-for list="{{ catSubtopics }}" as="sub" hint-placeholder-count="6">
+            <span style="{{ chipStyle }}">{{ sub }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div style="max-width:1300px;margin:0 auto;padding:30px 26px 50px;display:grid;grid-template-columns:1fr 320px;gap:38px;align-items:start;">
+      <div>
+        <!-- lead -->
+        <article onClick="{{ openArticle }}" style="cursor:pointer;display:grid;grid-template-columns:1.3fr 1fr;gap:22px;border-bottom:1px solid #eee;padding-bottom:26px;margin-bottom:26px;align-items:center;">
+          <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:10px;overflow:hidden;background:#eee;"><image-slot id="ss-cat-lead" shape="rect"></image-slot></div>
+          <div>
+            <span style="font-size:11px;font-weight:800;color:#d22b2b;letter-spacing:.5px;">{{ catLead.cat }}</span>
+            <h2 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:29px;line-height:1.18;font-weight:800;margin:8px 0 12px;">{{ catLead.title }}</h2>
+            <p style="font-size:15.5px;line-height:1.55;color:#4a4a52;margin:0 0 10px;">{{ catLead.excerpt }}</p>
+            <span style="font-size:12.5px;color:#8a8a90;">{{ catLead.time }}</span>
+          </div>
+        </article>
+
+        <!-- list rows -->
+        <sc-for list="{{ catList }}" as="item" hint-placeholder-count="6">
+          <article onClick="{{ openArticle }}" style="cursor:pointer;display:grid;grid-template-columns:200px 1fr;gap:18px;padding:16px 0;border-bottom:1px solid #f0f0f0;align-items:center;">
+            <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:8px;overflow:hidden;background:#eee;"><image-slot id="{{ item.catSlot }}" shape="rect"></image-slot></div>
+            <div>
+              <span style="font-size:10.5px;font-weight:800;color:{{ item.color }};letter-spacing:.4px;">{{ item.cat }}</span>
+              <h3 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:20px;line-height:1.25;font-weight:700;margin:6px 0 7px;">{{ item.title }}</h3>
+              <p style="font-size:14px;line-height:1.5;color:#5a5a62;margin:0 0 7px;">{{ item.excerpt }}</p>
+              <span style="font-size:12px;color:#8a8a90;">{{ item.time }}</span>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+
+      <!-- sidebar -->
+      <aside style="position:sticky;top:131px;align-self:start;max-height:calc(100vh - 145px);overflow-y:auto;" class="ss-scroll">
+        <div style="border:1px solid #ececec;border-radius:10px;overflow:hidden;margin-bottom:22px;">
+          <div style="background:{{ catAccent }};color:#fff;padding:11px 15px;font-family:'Spectral',serif;font-size:16px;font-weight:700;">{{ t.mostRead }}</div>
+          <sc-for list="{{ latestList }}" as="item" hint-placeholder-count="5">
+            <div onClick="{{ openArticle }}" style="display:flex;gap:12px;padding:13px 15px;border-bottom:1px solid #f2f2f2;cursor:pointer;">
+              <span style="font-family:'Spectral',serif;font-size:22px;font-weight:800;color:#e5c19a;line-height:1;">{{ item.rank }}</span>
+              <h4 style="font-size:14px;line-height:1.35;font-weight:600;margin:0;color:#26262b;">{{ item.title }}</h4>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:#131316;border-radius:10px;padding:22px 20px;color:#fff;">
+          <h3 style="font-family:'Spectral',serif;font-size:19px;font-weight:700;margin:0 0 8px;">{{ t.newsletterH }}</h3>
+          <p style="font-size:13px;color:#b0b0b6;margin:0 0 14px;line-height:1.5;">{{ t.newsletterP }}</p>
+          <input placeholder="{{ t.emailPh }}" style="width:100%;border:none;border-radius:8px;padding:11px 13px;font-family:inherit;font-size:13.5px;margin-bottom:9px;outline:none;" />
+          <button style="width:100%;background:{{ catAccent }};color:#fff;border:none;border-radius:8px;padding:11px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;">{{ t.subscribe }}</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ==================== E-PAPER ==================== -->
+  <sc-if value="{{ isEpaper }}" hint-placeholder-val="{{ false }}">
+  <main style="background:#f1f0ea;">
+    <div style="max-width:1300px;margin:0 auto;padding:34px 26px 60px;">
+      <div style="margin-bottom:24px;">
+        <h1 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:36px;font-weight:800;margin:0 0 6px;">{{ epaper.title }}</h1>
+        <p style="font-size:15px;color:#6a6a72;margin:0;">{{ epaper.sub }}</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 372px;gap:36px;align-items:start;">
+        <!-- newspaper front page mockup -->
+        <div>
+          <div style="background:#fbfbf4;border:1px solid #ddd9cb;box-shadow:0 16px 40px rgba(0,0,0,.14);padding:36px 36px 42px;">
+            <div style="text-align:center;border-bottom:3px double #1a1a1f;padding-bottom:12px;">
+              <img src="assets/salil-sandesh-logo.png" alt="Salil Sandesh" style="height:86px;width:auto;display:inline-block;" />
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:10px;letter-spacing:.5px;color:#4a4a52;border-bottom:1px solid #cfccbe;padding:7px 0;margin-bottom:18px;text-transform:uppercase;">
+              <span>{{ epaper.dateLine }}</span><span>{{ epaper.price }}</span>
+            </div>
+            <h2 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:32px;line-height:1.1;font-weight:800;margin:0 0 14px;text-align:center;">{{ epaper.lead.title }}</h2>
+            <div style="position:relative;width:100%;aspect-ratio:16/8;background:#e9e6da;margin-bottom:8px;"><image-slot id="ss-ep-hero" shape="rect"></image-slot></div>
+            <div style="font-size:10.5px;color:#7a776c;font-style:italic;text-align:center;margin-bottom:18px;">{{ epaper.lead.excerpt }}</div>
+            <div style="column-count:3;column-gap:22px;column-rule:1px solid #d6d2c2;font-family:'Spectral','Noto Serif Devanagari',serif;font-size:12px;line-height:1.65;color:#2a2a30;text-align:justify;">
+              <sc-for list="{{ epaper.body }}" as="p" hint-placeholder-count="4">
+                <p style="margin:0 0 11px;">{{ p }}</p>
+              </sc-for>
+            </div>
+          </div>
+          <div style="margin-top:28px;">
+            <h3 style="font-family:'Spectral',serif;font-size:18px;font-weight:700;margin:0 0 14px;">{{ t.pastEditions }}</h3>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+              <sc-for list="{{ pastEditions }}" as="ed" hint-placeholder-count="4">
+                <div style="cursor:pointer;">
+                  <div style="position:relative;width:100%;aspect-ratio:3/4;background:#e9e6da;border:1px solid #ddd9cb;box-shadow:0 4px 12px rgba(0,0,0,.08);"><image-slot id="{{ ed.slot }}" shape="rect"></image-slot></div>
+                  <div style="font-size:12px;text-align:center;margin-top:8px;color:#6a6a72;font-weight:600;">{{ ed.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        <!-- subscription + perks -->
+        <aside>
+          <div style="background:#131316;color:#fff;border-radius:16px;padding:28px 26px;">
+            <div style="display:inline-block;background:#e5720a;color:#fff;font-size:11px;font-weight:800;letter-spacing:.7px;padding:5px 12px;border-radius:5px;margin-bottom:16px;">PREMIUM</div>
+            <h3 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:27px;font-weight:800;margin:0 0 6px;">{{ t.goPremium }}</h3>
+            <p style="font-size:13.5px;color:#b0b0b6;margin:0 0 18px;line-height:1.5;">{{ t.premiumSub }}</p>
+            <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:18px;"><span style="font-family:'Spectral',serif;font-size:42px;font-weight:800;">{{ epaper.price }}</span><span style="font-size:14px;color:#9a9aa2;">{{ t.perMonth }}</span></div>
+            <button style="width:100%;background:#e5720a;color:#fff;border:none;border-radius:10px;padding:14px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:24px;">{{ t.subscribeNow }}</button>
+            <div style="display:flex;flex-direction:column;gap:18px;">
+              <sc-for list="{{ epaperPerks }}" as="p" hint-placeholder-count="4">
+                <div style="display:flex;gap:14px;align-items:center;">
+                  <div style="width:48px;height:48px;flex:none;border-radius:12px;background:linear-gradient(135deg,#f5820a,#c25a08);display:flex;align-items:center;justify-content:center;">
+                    <sc-if value="{{ p.isPaper }}" hint-placeholder-val="{{ false }}"><div style="width:21px;height:25px;background:#fff;border-radius:2px;position:relative;"><div style="position:absolute;left:3px;right:3px;top:4px;height:2px;background:#e5720a;"></div><div style="position:absolute;left:3px;right:3px;top:8px;height:2px;background:#e5720a;"></div><div style="position:absolute;left:3px;right:7px;top:12px;height:2px;background:#e5720a;"></div><div style="position:absolute;left:3px;right:5px;top:16px;height:2px;background:#e5720a;"></div></div></sc-if>
+                    <sc-if value="{{ p.isGem }}" hint-placeholder-val="{{ false }}"><div style="width:22px;height:22px;background:#fff;transform:rotate(45deg);border-radius:4px;"></div></sc-if>
+                    <sc-if value="{{ p.isAdlite }}" hint-placeholder-val="{{ false }}"><div style="width:24px;height:24px;border:3px solid #fff;border-radius:50%;position:relative;"><div style="position:absolute;left:-4px;top:8.5px;width:32px;height:3px;background:#fff;transform:rotate(45deg);border-radius:2px;"></div></div></sc-if>
+                    <sc-if value="{{ p.isGrid }}" hint-placeholder-val="{{ false }}"><div style="width:24px;height:24px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:2px;"><span style="background:#fff;"></span><span style="background:rgba(255,255,255,.4);"></span><span style="background:#fff;"></span><span style="background:rgba(255,255,255,.4);"></span><span style="background:#fff;"></span><span style="background:rgba(255,255,255,.4);"></span><span style="background:#fff;"></span><span style="background:rgba(255,255,255,.4);"></span><span style="background:#fff;"></span></div></sc-if>
+                  </div>
+                  <div><div style="font-size:14.5px;font-weight:700;">{{ p.h }}</div><div style="font-size:12px;color:#9a9aa2;line-height:1.4;margin-top:2px;">{{ p.d }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ==================== WEATHER ==================== -->
+  <sc-if value="{{ isWeather }}" hint-placeholder-val="{{ false }}">
+  <main style="background:#f5f6f9;">
+    <div style="max-width:1300px;margin:0 auto;padding:26px 26px 60px;display:grid;grid-template-columns:1fr 340px;gap:34px;align-items:start;">
+      <div>
+        <div style="display:inline-flex;background:#e7e9ee;border-radius:999px;padding:5px;margin-bottom:22px;">
+          <span onClick="{{ setWxW }}" style="{{ wxTabW }}">{{ t.weather }}</span>
+          <span onClick="{{ setWxA }}" style="{{ wxTabA }}">{{ t.aqi }}</span>
+        </div>
+        <sc-if value="{{ wxWeather }}" hint-placeholder-val="{{ true }}">
+        <div style="background:linear-gradient(120deg,#bfe3f5 0%,#cfd6f2 55%,#e7d3f0 100%);border-radius:18px;padding:30px 34px;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">
+          <div style="position:relative;">
+            <div onClick="{{ toggleLoc }}" style="display:flex;align-items:center;gap:9px;cursor:pointer;"><h2 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:31px;font-weight:800;margin:0;color:#16233a;">{{ weather.city }}</h2><span style="font-size:15px;color:#16233a;">▾</span></div>
+            <p style="font-size:15px;color:#2a3a52;margin:10px 0 4px;">{{ weather.cond }}</p>
+            <p style="font-size:13px;color:#4a5a72;margin:0;">{{ weather.date }}</p>
+            <sc-if value="{{ locOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:46px;left:0;z-index:30;width:300px;background:#fff;border-radius:14px;box-shadow:0 24px 54px rgba(0,0,0,.28);padding:16px;">
+                <div style="display:flex;gap:8px;align-items:center;background:#f2f3f5;border-radius:9px;padding:9px 12px;margin-bottom:14px;">
+                  <span style="width:14px;height:14px;border:2px solid #9a9aa2;border-radius:50%;position:relative;flex:none;display:inline-block;"><span style="position:absolute;width:6px;height:2px;background:#9a9aa2;transform:rotate(45deg);bottom:-2px;right:-3px;border-radius:2px;"></span></span>
+                  <input placeholder="{{ t.searchDistrict }}" style="flex:1;border:none;outline:none;background:transparent;font-family:inherit;font-size:13.5px;color:#26262b;" />
+                </div>
+                <div onClick="{{ useCurrentLoc }}" style="cursor:pointer;padding-bottom:12px;border-bottom:1px solid #eee;margin-bottom:6px;">
+                  <div style="font-size:14px;font-weight:700;color:#1a1a1f;">{{ t.currentLoc }}</div>
+                  <div style="font-size:12px;color:#2f77d6;margin-top:2px;">{{ t.geoDenied }}</div>
+                </div>
+                <div class="ss-scroll" style="max-height:200px;overflow-y:auto;">
+                  <sc-for list="{{ locations }}" as="loc" hint-placeholder-count="8">
+                    <div onClick="{{ loc.onClick }}" style="padding:10px 2px;font-size:14px;color:#26262b;cursor:pointer;border-bottom:1px solid #f4f4f5;">{{ loc.name }}</div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:66px;font-weight:800;line-height:.9;color:#16233a;">{{ weather.temp }}<span style="font-size:22px;">C</span></div>
+            <div style="font-size:14px;color:#2a3a52;margin-top:8px;">{{ t.maxL }} {{ weather.max }} &nbsp;|&nbsp; {{ t.minL }} {{ weather.min }}</div>
+            <div style="font-size:13px;color:#4a5a72;margin-top:2px;">{{ t.feelsLike }} {{ weather.feels }}</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px;">
+          <div style="background:#fff;border:1px solid #ececf0;border-radius:12px;padding:15px 16px;"><div style="font-size:12px;color:#8a8a90;font-weight:600;">{{ t.humidity }}</div><div style="font-size:20px;font-weight:800;color:#26262b;margin-top:5px;">{{ weather.humidity }}</div></div>
+          <div style="background:#fff;border:1px solid #ececf0;border-radius:12px;padding:15px 16px;"><div style="font-size:12px;color:#8a8a90;font-weight:600;">{{ t.wind }}</div><div style="font-size:20px;font-weight:800;color:#26262b;margin-top:5px;">{{ weather.wind }}</div></div>
+          <div style="background:#fff;border:1px solid #ececf0;border-radius:12px;padding:15px 16px;"><div style="font-size:12px;color:#8a8a90;font-weight:600;">{{ t.uvIndex }}</div><div style="font-size:20px;font-weight:800;color:#26262b;margin-top:5px;">{{ weather.uv }}</div></div>
+          <div style="background:#fff;border:1px solid #ececf0;border-radius:12px;padding:15px 16px;"><div style="font-size:12px;color:#8a8a90;font-weight:600;">{{ t.aqi }}</div><div style="font-size:20px;font-weight:800;color:#c0721a;margin-top:5px;">{{ weather.aqiVal }} <span style="font-size:11px;font-weight:600;color:#8a8a90;">{{ weather.aqiCat }}</span></div></div>
+        </div>
+        <h3 style="font-family:'Spectral',serif;font-size:20px;font-weight:700;margin:0 0 14px;">{{ t.hourlyForecast }}</h3>
+        <div class="ss-scroll" style="display:flex;gap:8px;overflow-x:auto;background:#fff;border:1px solid #ececf0;border-radius:14px;padding:18px;margin-bottom:26px;">
+          <sc-for list="{{ hourly }}" as="h" hint-placeholder-count="10">
+            <div style="text-align:center;min-width:62px;flex:none;">
+              <div style="font-size:14px;font-weight:800;color:#26262b;margin-bottom:12px;">{{ h.temp }}</div>
+              <div style="height:34px;display:flex;align-items:flex-start;justify-content:center;">
+                <sc-if value="{{ h.isSun }}" hint-placeholder-val="{{ false }}"><div style="width:26px;height:26px;border-radius:50%;background:#f6c445;box-shadow:0 0 0 4px rgba(246,196,69,.25);"></div></sc-if>
+                <sc-if value="{{ h.isCloud }}" hint-placeholder-val="{{ false }}"><div style="width:32px;height:16px;border-radius:10px;background:#b9c4d0;position:relative;margin-top:8px;"><div style="position:absolute;width:16px;height:16px;border-radius:50%;background:#b9c4d0;top:-8px;left:5px;"></div><div style="position:absolute;width:12px;height:12px;border-radius:50%;background:#b9c4d0;top:-5px;right:4px;"></div></div></sc-if>
+                <sc-if value="{{ h.isRain }}" hint-placeholder-val="{{ false }}"><div style="position:relative;margin-top:4px;"><div style="width:32px;height:15px;border-radius:10px;background:#9aa8b8;position:relative;"><div style="position:absolute;width:15px;height:15px;border-radius:50%;background:#9aa8b8;top:-7px;left:6px;"></div></div><div style="position:absolute;left:7px;top:17px;width:2px;height:7px;background:#4a90d9;border-radius:2px;"></div><div style="position:absolute;left:15px;top:17px;width:2px;height:7px;background:#4a90d9;border-radius:2px;"></div><div style="position:absolute;left:23px;top:17px;width:2px;height:7px;background:#4a90d9;border-radius:2px;"></div></div></sc-if>
+              </div>
+              <div style="font-size:12px;color:#8a8a90;margin-top:12px;">{{ h.time }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:linear-gradient(90deg,#fcefd6,#dbe4f0 48%,#1c2e4a);border-radius:14px;padding:22px 28px;display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+          <div style="display:flex;align-items:center;gap:12px;color:#16233a;"><div style="width:26px;height:26px;border-radius:50%;background:#f5a623;box-shadow:0 0 0 4px rgba(245,166,35,.28);"></div><div><div style="font-size:12px;">{{ t.sunrise }}</div><div style="font-size:20px;font-weight:800;">{{ weather.sunrise }}</div></div></div>
+          <div style="font-size:12px;color:#3a4a62;">{{ weather.dayLen }}</div>
+          <div style="display:flex;align-items:center;gap:12px;color:#eaeef5;"><div style="text-align:right;"><div style="font-size:12px;">{{ t.sunset }}</div><div style="font-size:20px;font-weight:800;">{{ weather.sunset }}</div></div><div style="width:26px;height:26px;border-radius:50%;background:#f57e42;box-shadow:0 0 0 4px rgba(245,126,66,.3);"></div></div>
+        </div>
+        <h3 style="font-family:'Spectral',serif;font-size:20px;font-weight:700;margin:0 0 14px;">{{ t.weekForecast }}</h3>
+        <div style="background:#fff;border:1px solid #ececf0;border-radius:14px;overflow:hidden;">
+          <sc-for list="{{ daily }}" as="d" hint-placeholder-count="7">
+            <div style="display:grid;grid-template-columns:64px 44px 1fr auto;gap:16px;align-items:center;padding:14px 22px;border-bottom:1px solid #f2f2f5;">
+              <span style="font-size:14px;font-weight:700;color:#26262b;">{{ d.day }}</span>
+              <div style="height:26px;display:flex;align-items:center;">
+                <sc-if value="{{ d.isSun }}" hint-placeholder-val="{{ false }}"><div style="width:22px;height:22px;border-radius:50%;background:#f6c445;box-shadow:0 0 0 3px rgba(246,196,69,.25);"></div></sc-if>
+                <sc-if value="{{ d.isCloud }}" hint-placeholder-val="{{ false }}"><div style="width:28px;height:14px;border-radius:9px;background:#b9c4d0;position:relative;"><div style="position:absolute;width:14px;height:14px;border-radius:50%;background:#b9c4d0;top:-7px;left:5px;"></div></div></sc-if>
+                <sc-if value="{{ d.isRain }}" hint-placeholder-val="{{ false }}"><div style="position:relative;"><div style="width:28px;height:13px;border-radius:9px;background:#9aa8b8;position:relative;"><div style="position:absolute;width:13px;height:13px;border-radius:50%;background:#9aa8b8;top:-6px;left:5px;"></div></div><div style="position:absolute;left:7px;top:14px;width:2px;height:6px;background:#4a90d9;border-radius:2px;"></div><div style="position:absolute;left:14px;top:14px;width:2px;height:6px;background:#4a90d9;border-radius:2px;"></div></div></sc-if>
+              </div>
+              <span style="font-size:13.5px;color:#6a6a72;">{{ d.cond }}</span>
+              <span style="font-size:14px;font-weight:700;color:#26262b;">{{ d.hiT }}<span style="color:#a8a8ae;font-weight:500;"> / {{ d.lo }}</span></span>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ wxAqi }}" hint-placeholder-val="{{ false }}">
+          <div style="position:relative;z-index:20;border-radius:18px;padding:28px 32px;margin-bottom:16px;color:#fff;background:{{ aqi.color }};">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:2;">
+              <div style="position:relative;">
+                <div onClick="{{ toggleLoc }}" style="display:flex;align-items:center;gap:9px;cursor:pointer;"><h2 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:29px;font-weight:800;margin:0;">{{ aqi.city }} AQI</h2><span style="font-size:15px;">▾</span></div>
+                <div style="font-size:15px;font-weight:700;margin-top:8px;opacity:.96;">{{ aqi.label }}</div>
+                <sc-if value="{{ locOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;top:44px;left:0;z-index:30;width:300px;background:#fff;border-radius:14px;box-shadow:0 24px 54px rgba(0,0,0,.3);padding:16px;color:#26262b;">
+                    <div style="display:flex;gap:8px;align-items:center;background:#f2f3f5;border-radius:9px;padding:9px 12px;margin-bottom:14px;">
+                      <span style="width:14px;height:14px;border:2px solid #9a9aa2;border-radius:50%;position:relative;flex:none;display:inline-block;"><span style="position:absolute;width:6px;height:2px;background:#9a9aa2;transform:rotate(45deg);bottom:-2px;right:-3px;border-radius:2px;"></span></span>
+                      <input placeholder="{{ t.searchDistrict }}" style="flex:1;border:none;outline:none;background:transparent;font-family:inherit;font-size:13.5px;color:#26262b;" />
+                    </div>
+                    <div onClick="{{ useCurrentLoc }}" style="cursor:pointer;padding-bottom:12px;border-bottom:1px solid #eee;margin-bottom:6px;">
+                      <div style="font-size:14px;font-weight:700;color:#1a1a1f;">{{ t.currentLoc }}</div>
+                      <div style="font-size:12px;color:#2f77d6;margin-top:2px;">{{ t.geoDenied }}</div>
+                    </div>
+                    <div class="ss-scroll" style="max-height:200px;overflow-y:auto;">
+                      <sc-for list="{{ locations }}" as="loc" hint-placeholder-count="8">
+                        <div onClick="{{ loc.onClick }}" style="padding:10px 2px;font-size:14px;color:#26262b;cursor:pointer;border-bottom:1px solid #f4f4f5;">{{ loc.name }}</div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:58px;font-weight:800;line-height:.9;">{{ aqi.val }}</div>
+                <div style="font-size:13px;margin-top:10px;">PM10: {{ aqi.pm10 }} µg/m³</div>
+                <div style="font-size:13px;">PM2.5: {{ aqi.pm25 }} µg/m³</div>
+              </div>
+            </div>
+            <div style="position:absolute;left:0;right:0;bottom:0;height:24px;background:rgba(0,0,0,.2);border-radius:50% 50% 0 0 / 100% 100% 0 0;"></div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);margin-bottom:30px;">
+            <sc-for list="{{ aqiScale }}" as="s" hint-placeholder-count="6">
+              <div style="text-align:center;">
+                <div style="height:6px;background:{{ s.color }};"></div>
+                <div style="font-size:12px;font-weight:700;color:#26262b;margin-top:7px;">{{ s.label }}</div>
+                <div style="font-size:11px;color:#8a8a90;margin-top:2px;">{{ s.range }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <h3 style="font-family:'Spectral',serif;font-size:20px;font-weight:700;margin:0 0 14px;">Last 7 Days AQI</h3>
+          <div style="background:#fff;border:1px solid #ececf0;border-radius:14px;padding:24px 22px;margin-bottom:18px;">
+            <div style="display:flex;justify-content:space-around;align-items:flex-end;">
+              <sc-for list="{{ last7 }}" as="d" hint-placeholder-count="7">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;">
+                  <div style="display:flex;gap:5px;align-items:flex-end;height:190px;">
+                    <div style="width:16px;background:#33b0ef;border-radius:3px 3px 0 0;height:{{ d.maxH }}%;"></div>
+                    <div style="width:16px;background:#5b4fc4;border-radius:3px 3px 0 0;height:{{ d.minH }}%;"></div>
+                  </div>
+                  <div style="font-size:11px;color:#8a8a90;">{{ d.day }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;gap:18px;justify-content:center;margin-bottom:36px;">
+            <div style="text-align:center;"><span style="display:inline-block;background:#6bbf59;color:#fff;font-weight:700;font-size:13px;padding:8px 18px;border-radius:8px;">Min. 79.38</span><div style="font-size:11px;color:#8a8a90;margin-top:6px;">On Jul 05 at 8:01 PM</div></div>
+            <div style="text-align:center;"><span style="display:inline-block;background:#b8443a;color:#fff;font-weight:700;font-size:13px;padding:8px 18px;border-radius:8px;">Max. 236.56</span><div style="font-size:11px;color:#8a8a90;margin-top:6px;">On Jun 30 at 12:01 AM</div></div>
+          </div>
+
+          <h3 style="font-family:'Spectral',serif;font-size:20px;font-weight:700;margin:0 0 16px;">Major Air Pollutants</h3>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+            <sc-for list="{{ pollutants }}" as="p" hint-placeholder-count="6">
+              <div style="background:{{ p.bg }};border-radius:12px;padding:16px 14px;text-align:center;">
+                <div style="font-size:12px;font-weight:700;color:#4a4a52;line-height:1.35;min-height:34px;">{{ p.name }}</div>
+                <div style="font-size:30px;font-weight:800;color:#26262b;margin:8px 0 2px;">{{ p.val }}</div>
+                <div style="font-size:11px;color:#8a8a90;">{{ p.unit }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <aside>
+        <h3 style="font-family:'Spectral',serif;font-size:20px;font-weight:700;margin:0 0 14px;border-bottom:2px solid #2f9dbf;padding-bottom:8px;">{{ t.weatherStoriesL }}</h3>
+        <sc-for list="{{ weatherStories }}" as="item" hint-placeholder-count="5">
+          <div onClick="{{ openArticle }}" style="cursor:pointer;display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #ececf0;">
+            <div style="width:88px;height:62px;flex:none;border-radius:7px;overflow:hidden;background:#eee;"><image-slot id="{{ item.wSlot }}" shape="rect"></image-slot></div>
+            <h4 style="font-size:14px;line-height:1.35;font-weight:600;margin:0;color:#26262b;">{{ item.title }}</h4>
+          </div>
+        </sc-for>
+      </aside>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ==================== GOLD / SILVER ==================== -->
+  <sc-if value="{{ isCommodity }}" hint-placeholder-val="{{ false }}">
+  <main>
+    <div style="max-width:1300px;margin:0 auto;padding:16px 26px;font-size:12.5px;color:#8a8a90;"><span onClick="{{ goHome }}" style="cursor:pointer;">{{ t.home }}</span> › <span style="color:#26262b;">{{ commodity.heading }}</span></div>
+    <div style="max-width:1300px;margin:0 auto;padding:8px 26px 56px;display:grid;grid-template-columns:250px 1fr;gap:34px;align-items:start;">
+      <aside>
+        <h3 style="font-family:'Spectral',serif;font-size:19px;font-weight:700;margin:0 0 14px;border-bottom:2px solid #caa53a;padding-bottom:8px;">{{ commodity.newsHeading }}</h3>
+        <sc-for list="{{ commodityNews }}" as="item" hint-placeholder-count="3">
+          <div onClick="{{ openArticle }}" style="cursor:pointer;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid #ececec;">
+            <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:7px;overflow:hidden;background:#eee;margin-bottom:9px;"><image-slot id="{{ item.cSlot }}" shape="rect"></image-slot></div>
+            <h4 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:15px;line-height:1.32;font-weight:600;margin:0;">{{ item.title }}</h4>
+          </div>
+        </sc-for>
+      </aside>
+      <div>
+        <h1 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:33px;font-weight:800;margin:0 0 12px;">{{ commodity.heading }}</h1>
+        <p style="font-size:15px;line-height:1.62;color:#4a4a52;margin:0 0 24px;">{{ commodity.desc }}</p>
+        <div style="border-radius:16px;padding:26px 28px;position:relative;overflow:hidden;background:{{ commodity.grad }};color:{{ commodity.ink }};margin-bottom:32px;">
+          <div style="display:inline-flex;background:rgba(255,255,255,.35);border-radius:999px;padding:5px;margin-bottom:24px;">
+            <span onClick="{{ setGold }}" style="{{ commoditySwatchGold }}">{{ t.gold }}</span>
+            <span onClick="{{ setSilver }}" style="{{ commoditySwatchSilver }}">{{ t.silver }}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;">
+            <div style="display:flex;gap:16px;flex-wrap:wrap;">
+              <sc-for list="{{ commodity.cards }}" as="c" hint-placeholder-count="3">
+                <div style="background:rgba(255,255,255,.4);border-radius:12px;padding:16px 20px;min-width:150px;backdrop-filter:blur(2px);">
+                  <div style="font-size:13px;font-weight:600;opacity:.85;margin-bottom:8px;">{{ c.k }}</div>
+                  <div style="font-family:'Spectral',serif;font-size:27px;font-weight:800;">{{ c.v }}</div>
+                  <div style="font-size:13px;font-weight:700;color:{{ c.chColor }};margin-top:4px;">{{ c.ch }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="text-align:right;"><div style="font-size:13px;font-weight:600;opacity:.8;">{{ t.today }}</div><div style="font-family:'Spectral',serif;font-size:32px;font-weight:800;line-height:1.1;">July 07</div><div style="font-size:13px;opacity:.8;">2026</div></div>
+          </div>
+        </div>
+        <h2 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:22px;font-weight:800;margin:0 0 16px;">{{ t.priceCalc }}</h2>
+        <div style="background:#f7f7f5;border:1px solid #ececec;border-radius:14px;padding:24px;display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:16px;align-items:end;">
+          <div><label style="font-size:12px;font-weight:700;color:#6a6a72;display:block;margin-bottom:7px;">{{ t.calcCity }}</label><select style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-family:inherit;font-size:14px;background:#fff;"><sc-for list="{{ commodityCalc.cities }}" as="c" hint-placeholder-count="5"><option>{{ c }}</option></sc-for></select></div>
+          <div><label style="font-size:12px;font-weight:700;color:#6a6a72;display:block;margin-bottom:7px;">{{ t.calcQuality }}</label><select style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-family:inherit;font-size:14px;background:#fff;"><sc-for list="{{ commodityCalc.qualities }}" as="q" hint-placeholder-count="3"><option>{{ q }}</option></sc-for></select></div>
+          <div><label style="font-size:12px;font-weight:700;color:#6a6a72;display:block;margin-bottom:7px;">{{ t.calcQty }}</label><input value="10" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-family:inherit;font-size:14px;background:#fff;" /></div>
+          <button style="background:#131316;color:#fff;border:none;border-radius:8px;padding:11px 22px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;">{{ t.calculate }}</button>
+        </div>
+        <div style="margin-top:16px;background:#fff;border:1px dashed #d0ccbb;border-radius:12px;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;"><span style="font-size:14px;color:#6a6a72;font-weight:600;">{{ t.calcResult }} (10 g)</span><span style="font-family:'Spectral',serif;font-size:26px;font-weight:800;color:#26262b;">{{ commodityCalc.result }}</span></div>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ==================== SEARCH RESULTS ==================== -->
+  <sc-if value="{{ isResults }}" hint-placeholder-val="{{ false }}">
+  <main style="background:#fafafa;">
+    <div style="max-width:1300px;margin:0 auto;padding:16px 26px;font-size:12.5px;color:#8a8a90;"><span onClick="{{ goHome }}" style="cursor:pointer;">{{ t.home }}</span> › <span style="color:#26262b;">{{ resultQuery }}</span></div>
+    <div style="max-width:1300px;margin:0 auto;padding:8px 26px 54px;display:grid;grid-template-columns:236px 1fr 272px;gap:34px;align-items:start;">
+      <aside>
+        <h3 style="font-family:'Spectral',serif;font-size:18px;font-weight:700;margin:0 0 14px;border-bottom:2px solid #e5720a;padding-bottom:8px;">{{ t.trendingNews }}</h3>
+        <sc-for list="{{ trendingSide }}" as="item" hint-placeholder-count="3">
+          <div onClick="{{ openArticle }}" style="cursor:pointer;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid #ececec;">
+            <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:7px;overflow:hidden;background:#eee;margin-bottom:9px;"><image-slot id="{{ item.tSlot }}" shape="rect"></image-slot></div>
+            <h4 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:14.5px;line-height:1.32;font-weight:600;margin:0;color:#26262b;">{{ item.title }}</h4>
+          </div>
+        </sc-for>
+      </aside>
+
+      <div>
+        <div style="display:flex;gap:10px;align-items:center;background:#fff;border:1px solid #e2e2e2;border-radius:999px;padding:9px 10px 9px 20px;box-shadow:0 4px 14px rgba(0,0,0,.05);margin-bottom:16px;">
+          <span style="width:16px;height:16px;border:2px solid #8a8a90;border-radius:50%;position:relative;flex:none;display:inline-block;"><span style="position:absolute;width:7px;height:2px;background:#8a8a90;transform:rotate(45deg);bottom:-2px;right:-4px;border-radius:2px;"></span></span>
+          <input value="{{ resultQuery }}" onInput="{{ onResultQuery }}" style="flex:1;border:none;outline:none;font-family:inherit;font-size:16px;font-weight:600;color:#26262b;background:transparent;" />
+          <button onClick="{{ doSidebarSearch }}" style="width:38px;height:38px;flex:none;border-radius:50%;background:#e5720a;color:#fff;border:none;font-size:17px;cursor:pointer;">→</button>
+        </div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px;">
+          <sc-for list="{{ searchTabs }}" as="tb" hint-placeholder-count="5">
+            <span onClick="{{ tb.onClick }}" style="{{ tb.style }}">{{ tb.label }}</span>
+          </sc-for>
+        </div>
+        <div style="font-size:14px;color:#6a6a72;margin-bottom:16px;">'<b style="color:#26262b;">{{ resultQuery }}</b>' — 1,000 {{ srCountLabel }}</div>
+        <sc-if value="{{ srList }}" hint-placeholder-val="{{ true }}">
+        <sc-for list="{{ results }}" as="r" hint-placeholder-count="6">
+          <div onClick="{{ openArticle }}" style="cursor:pointer;display:grid;grid-template-columns:190px 1fr;gap:18px;padding:20px 0;border-bottom:1px solid #ececec;align-items:start;">
+            <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:8px;overflow:hidden;background:#eee;"><image-slot id="{{ r.rSlot }}" shape="rect"></image-slot></div>
+            <div>
+              <h3 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:19px;line-height:1.28;font-weight:700;margin:0 0 8px;color:#1a1a1f;">{{ r.title }}</h3>
+              <div style="font-size:12px;color:#8a8a90;margin-bottom:9px;">{{ r.rdate }} &nbsp;|&nbsp; {{ r.cat }}</div>
+              <p style="font-size:14px;line-height:1.5;color:#5a5a62;margin:0 0 11px;">{{ r.excerpt }}</p>
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#b0560a;"><span style="width:6px;height:6px;border-radius:50%;background:#e5720a;display:inline-block;"></span>{{ r.source }}</span>
+                <button style="border:1px solid #e2e2e2;background:#fff;border-radius:999px;padding:6px 14px;font-family:inherit;font-size:12.5px;font-weight:600;color:#26262b;cursor:pointer;">↗ {{ t.share }}</button>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+        </sc-if>
+
+        <sc-if value="{{ srVideos }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+          <sc-for list="{{ searchVideos }}" as="v" hint-placeholder-count="6">
+            <div onClick="{{ openArticle }}" style="cursor:pointer;">
+              <div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#1a1a1f;">
+                <image-slot id="{{ v.vSlot }}" shape="rect"></image-slot>
+                <span style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.82);color:#fff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:3px;">{{ v.dur }}</span>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;"><div style="width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;"><span style="width:0;height:0;border-left:14px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:3px;"></span></div></div>
+              </div>
+              <h3 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:16px;line-height:1.3;font-weight:700;margin:10px 0 5px;color:#1a1a1f;">{{ v.title }}</h3>
+              <div style="font-size:12px;color:#8a8a90;">{{ v.time }} &nbsp;|&nbsp; {{ v.cat }}</div>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ srPhotos }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <sc-for list="{{ searchPhotos }}" as="p" hint-placeholder-count="8">
+            <div onClick="{{ openArticle }}" style="cursor:pointer;position:relative;border-radius:10px;overflow:hidden;aspect-ratio:4/3;background:#eee;">
+              <image-slot id="{{ p.pSlot }}" shape="rect"></image-slot>
+              <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.72),transparent 55%);pointer-events:none;"></div>
+              <span style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;font-weight:800;letter-spacing:.5px;padding:3px 8px;border-radius:4px;">📷 PHOTO</span>
+              <h4 style="position:absolute;left:14px;right:14px;bottom:12px;font-family:'Spectral','Noto Serif Devanagari',serif;font-size:15px;line-height:1.3;font-weight:700;margin:0;color:#fff;">{{ p.title }}</h4>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ srWeb }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+          <sc-for list="{{ searchWeb }}" as="w" hint-placeholder-count="6">
+            <div onClick="{{ openArticle }}" style="cursor:pointer;position:relative;border-radius:14px;overflow:hidden;aspect-ratio:9/16;background:#1a1a1f;">
+              <image-slot id="{{ w.wSlot2 }}" shape="rect"></image-slot>
+              <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 45%,rgba(0,0,0,.35) 100%);pointer-events:none;"></div>
+              <span style="position:absolute;top:12px;left:12px;background:rgba(229,114,10,.92);color:#fff;font-size:10px;font-weight:800;letter-spacing:.5px;padding:3px 9px;border-radius:999px;">WEB STORY</span>
+              <div style="position:absolute;left:12px;right:6px;top:12px;display:flex;gap:3px;">
+                <span style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.85);"></span><span style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.35);"></span><span style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.35);"></span>
+              </div>
+              <h4 style="position:absolute;left:14px;right:14px;bottom:16px;font-family:'Spectral','Noto Serif Devanagari',serif;font-size:16px;line-height:1.28;font-weight:700;margin:0;color:#fff;">{{ w.title }}</h4>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <div style="display:flex;justify-content:center;align-items:center;gap:8px;margin-top:36px;flex-wrap:wrap;">
+          <button onClick="{{ srPrev }}" style="{{ srPrevStyle }}">‹ {{ t.prev }}</button>
+          <sc-for list="{{ srPages }}" as="p" hint-placeholder-count="5">
+            <button onClick="{{ p.onClick }}" style="{{ p.style }}">{{ p.n }}</button>
+          </sc-for>
+          <span style="color:#b0b0b6;font-size:14px;padding:0 3px;">…</span>
+          <button onClick="{{ srNext }}" style="{{ srNextStyle }}">{{ t.next }} ›</button>
+        </div>
+      </div>
+
+      <aside>
+        <div style="border:1px solid #ececec;border-radius:10px;padding:18px 18px 20px;background:#fff;">
+          <h3 style="font-family:'Spectral',serif;font-size:18px;font-weight:700;margin:0 0 14px;">{{ t.quickLinks }} ›</h3>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ quickLinks }}" as="q" hint-placeholder-count="6">
+              <span onClick="{{ goHome }}" style="font-size:13.5px;font-weight:600;color:#b0560a;cursor:pointer;">{{ q }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ==================== SIGN IN ==================== -->
+  <sc-if value="{{ isSignin }}" hint-placeholder-val="{{ false }}">
+  <main style="min-height:100vh;background:radial-gradient(1200px 620px at 18% -5%,#fdf1e5 0%,#f5f6f9 55%);display:flex;align-items:center;justify-content:center;padding:36px 20px;font-family:'Noto Sans','Noto Sans Devanagari',system-ui,sans-serif;">
+    <div style="width:100%;max-width:980px;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 40px 90px rgba(20,15,10,.2);display:grid;grid-template-columns:1.05fr 1fr;animation:ssFadeUp .35s ease;">
+      <div style="position:relative;background:linear-gradient(160deg,#17171b 0%,#2a1a10 58%,#4a2708 100%);color:#fff;padding:44px 40px;display:flex;flex-direction:column;overflow:hidden;">
+        <div style="position:absolute;top:-70px;right:-60px;width:210px;height:210px;border-radius:50%;background:rgba(229,114,10,.16);"></div>
+        <div style="position:relative;background:#fff;border-radius:14px;padding:11px 15px;align-self:flex-start;box-shadow:0 10px 26px rgba(0,0,0,.28);">
+          <img src="assets/salil-sandesh-logo.png" alt="Salil Sandesh" style="height:52px;width:auto;display:block;" />
+        </div>
+        <div style="position:relative;margin-top:auto;margin-bottom:auto;padding:36px 0;">
+          <div style="min-height:170px;">{{ perkCard }}</div>
+          <div style="display:flex;gap:8px;margin-top:24px;align-items:center;">
+            <sc-for list="{{ perkDots }}" as="d" hint-placeholder-count="4">
+              <span style="{{ d.style }}"></span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="position:relative;font-size:12px;color:#9a8f84;">© 2026 Salil Sandesh Media</div>
+      </div>
+      <div style="padding:44px 46px;display:flex;flex-direction:column;justify-content:center;">
+        <img src="assets/salil-sandesh-logo.png" alt="Salil Sandesh" style="height:44px;width:auto;align-self:flex-start;margin-bottom:22px;" />
+        <h1 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:30px;font-weight:800;margin:0 0 6px;color:#17171b;">{{ t.signinGet }}</h1>
+        <p style="font-size:14.5px;color:#6a6a72;margin:0 0 26px;">{{ t.signinSub }}</p>
+        <label style="font-size:12.5px;font-weight:700;color:#3a3a42;margin-bottom:8px;">{{ t.mobileLabel }}</label>
+        <div style="display:flex;align-items:center;border:1.5px solid #e4e4e7;border-radius:12px;overflow:hidden;margin-bottom:16px;">
+          <span style="display:flex;align-items:center;gap:7px;padding:0 13px;height:52px;background:#f7f7f8;border-right:1px solid #eaeaea;font-size:15px;font-weight:700;color:#26262b;flex:none;"><span style="width:20px;height:14px;border-radius:2px;overflow:hidden;display:inline-block;position:relative;flex:none;"><span style="position:absolute;top:0;left:0;right:0;height:4.6px;background:#ff9933;"></span><span style="position:absolute;top:4.6px;left:0;right:0;height:4.7px;background:#fff;"></span><span style="position:absolute;bottom:0;left:0;right:0;height:4.6px;background:#138808;"></span></span>+91</span>
+          <input value="{{ authPhone }}" onInput="{{ setAuthPhone }}" inputmode="numeric" placeholder="98765 43210" style="flex:1;border:none;outline:none;height:52px;padding:0 14px;font-family:inherit;font-size:16px;letter-spacing:.5px;color:#26262b;background:transparent;" />
+        </div>
+        <button onClick="{{ sendOtp }}" style="{{ continueBtnStyle }}" style-hover="filter:brightness(1.07);transform:translateY(-1px);">{{ t.continueBtn }}</button>
+        <div style="display:flex;align-items:center;gap:14px;margin:22px 0;">
+          <span style="flex:1;height:1px;background:#eaeaea;"></span><span style="font-size:12px;font-weight:700;color:#a0a0a8;">{{ t.orLabel }}</span><span style="flex:1;height:1px;background:#eaeaea;"></span>
+        </div>
+        <button onClick="{{ loginGoogle }}" style="display:flex;align-items:center;justify-content:center;gap:11px;width:100%;height:50px;border:1.5px solid #e4e4e7;background:#fff;border-radius:12px;font-family:inherit;font-size:14.5px;font-weight:700;color:#26262b;cursor:pointer;margin-bottom:12px;transition:background .16s,border-color .16s;" style-hover="background:#f7f7f8;border-color:#d6d6da;"><img src="https://developers.google.com/identity/images/g-logo.png" alt="" style="width:19px;height:19px;" />{{ t.googleBtn }}</button>
+        <button onClick="{{ loginApple }}" style="display:flex;align-items:center;justify-content:center;gap:11px;width:100%;height:50px;border:1.5px solid #e4e4e7;background:#fff;border-radius:12px;font-family:inherit;font-size:14.5px;font-weight:700;color:#26262b;cursor:pointer;transition:background .16s,border-color .16s;" style-hover="background:#f7f7f8;border-color:#d6d6da;"><img src="https://cdn.simpleicons.org/apple/000000" alt="" style="width:18px;height:18px;" />{{ t.appleBtn }}</button>
+        <p style="font-size:12px;color:#9a9aa2;line-height:1.5;margin:22px 0 0;">{{ t.termsNote }}</p>
+        <button onClick="{{ goHome }}" style="align-self:flex-start;background:none;border:none;color:#8a8a90;font-family:inherit;font-size:13px;cursor:pointer;margin-top:14px;padding:0;transition:color .16s;" style-hover="color:#e5720a;">← {{ t.backHome }}</button>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ==================== OTP ==================== -->
+  <sc-if value="{{ isOtp }}" hint-placeholder-val="{{ false }}">
+  <main style="min-height:100vh;background:radial-gradient(1200px 620px at 18% -5%,#fdf1e5 0%,#f5f6f9 55%);display:flex;align-items:center;justify-content:center;padding:36px 20px;font-family:'Noto Sans','Noto Sans Devanagari',system-ui,sans-serif;">
+    <div style="width:100%;max-width:980px;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 40px 90px rgba(20,15,10,.2);display:grid;grid-template-columns:1.05fr 1fr;animation:ssFadeUp .35s ease;">
+      <div style="position:relative;background:linear-gradient(160deg,#17171b 0%,#2a1a10 58%,#4a2708 100%);color:#fff;padding:44px 40px;display:flex;flex-direction:column;overflow:hidden;">
+        <div style="position:absolute;top:-70px;right:-60px;width:210px;height:210px;border-radius:50%;background:rgba(229,114,10,.16);"></div>
+        <div style="position:relative;background:#fff;border-radius:14px;padding:11px 15px;align-self:flex-start;box-shadow:0 10px 26px rgba(0,0,0,.28);">
+          <img src="assets/salil-sandesh-logo.png" alt="Salil Sandesh" style="height:52px;width:auto;display:block;" />
+        </div>
+        <div style="position:relative;margin-top:auto;margin-bottom:auto;padding:36px 0;">
+          <div style="min-height:170px;">{{ perkCard }}</div>
+          <div style="display:flex;gap:8px;margin-top:24px;align-items:center;">
+            <sc-for list="{{ perkDots }}" as="d" hint-placeholder-count="4">
+              <span style="{{ d.style }}"></span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="position:relative;font-size:12px;color:#9a8f84;">© 2026 Salil Sandesh Media</div>
+      </div>
+      <div style="padding:44px 46px;display:flex;flex-direction:column;justify-content:center;">
+        <button onClick="{{ goSignin }}" style="width:40px;height:40px;border-radius:50%;border:1.5px solid #e4e4e7;background:#fff;cursor:pointer;font-size:20px;color:#6a6a72;line-height:1;margin-bottom:26px;transition:background .16s;" style-hover="background:#f7f7f8;">‹</button>
+        <h1 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:30px;font-weight:800;margin:0 0 8px;color:#17171b;">{{ t.verifyTitle }}</h1>
+        <p style="font-size:14.5px;color:#6a6a72;margin:0 0 24px;line-height:1.5;">{{ t.otpSentTo }} <b style="color:#26262b;">+91 {{ authPhoneFmt }}</b> &nbsp;<span onClick="{{ goSignin }}" style="color:#e5720a;cursor:pointer;font-weight:700;">✎ {{ t.editNumber }}</span></p>
+        <div style="position:relative;margin-bottom:20px;">
+          <div style="display:flex;gap:10px;">
+            <sc-for list="{{ otpBoxes }}" as="d" hint-placeholder-count="6">
+              <div style="flex:1;height:56px;border:1.5px solid #e4e4e7;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#26262b;background:#fafafa;">{{ d }}</div>
+            </sc-for>
+          </div>
+          <input value="{{ otp }}" onInput="{{ setOtp }}" inputmode="numeric" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:text;" />
+        </div>
+        <div style="font-size:13.5px;color:#8a8a90;margin-bottom:24px;">— &nbsp;<span style="color:#e5720a;font-weight:700;cursor:pointer;">↻ {{ t.resendOtp }}</span></div>
+        <button onClick="{{ verifyOtp }}" style="{{ verifyBtnStyle }}" style-hover="filter:brightness(1.07);transform:translateY(-1px);">{{ t.verifyBtn }}</button>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ==================== ACCOUNT ==================== -->
+  <sc-if value="{{ isAccount }}" hint-placeholder-val="{{ false }}">
+  <main style="background:#f5f6f9;min-height:72vh;">
+    <div style="max-width:1000px;margin:0 auto;padding:34px 26px 60px;">
+      <div style="background:linear-gradient(120deg,#17171b,#3a1e0c);border-radius:20px;padding:28px 32px;display:flex;align-items:center;gap:22px;color:#fff;position:relative;overflow:hidden;">
+        <div style="position:absolute;right:-40px;top:-46px;width:170px;height:170px;border-radius:50%;background:rgba(229,114,10,.15);"></div>
+        <div style="width:78px;height:78px;border-radius:50%;background:linear-gradient(135deg,#e5720a,#c4530a);display:flex;align-items:center;justify-content:center;font-family:'Spectral',serif;font-size:34px;font-weight:800;flex:none;position:relative;">{{ accountInitial }}</div>
+        <div style="position:relative;flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;"><h1 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:25px;font-weight:800;margin:0;">{{ accountName }}</h1><span style="font-size:10.5px;font-weight:800;letter-spacing:.6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.28);padding:3px 9px;border-radius:6px;">{{ t.basicTag }}</span></div>
+          <div style="font-size:14px;color:#d8cfc5;margin-top:5px;">{{ accountContact }}</div>
+          <div style="font-size:12.5px;color:#9a8f84;margin-top:3px;">{{ t.memberSince }}</div>
+        </div>
+        <button onClick="{{ logout }}" style="position:relative;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:10px;padding:10px 18px;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;transition:background .16s;" style-hover="background:rgba(255,255,255,.22);">{{ t.logoutBtn }}</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:22px;margin-top:22px;align-items:start;">
+        <div style="background:#fff;border:1px solid #ececf0;border-radius:16px;padding:24px 26px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <h2 style="font-family:'Spectral',serif;font-size:19px;font-weight:700;margin:0;">{{ t.generalInfo }}</h2>
+            <sc-if value="{{ notEditing }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ toggleEditProfile }}" style="display:flex;align-items:center;gap:7px;border:1px solid #e5720a;background:#fff;color:#e5720a;border-radius:9px;padding:8px 15px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:background .16s,color .16s;" style-hover="background:#e5720a;color:#fff;">✎ {{ t.updateBtn }}</button>
+            </sc-if>
+          </div>
+          <p style="font-size:13px;color:#8a8a90;margin:0 0 20px;">{{ t.profileHint }}</p>
+          <sc-if value="{{ notEditing }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;">
+              <div><div style="font-size:12px;color:#8a8a90;font-weight:600;">{{ t.fldName }}</div><div style="{{ nameVS }}">{{ infoName }}</div></div>
+              <div><div style="font-size:12px;color:#8a8a90;font-weight:600;">{{ t.fldGender }}</div><div style="{{ genderVS }}">{{ infoGender }}</div></div>
+              <div><div style="font-size:12px;color:#8a8a90;font-weight:600;">{{ t.fldDob }}</div><div style="{{ dobVS }}">{{ infoDob }}</div></div>
+              <div><div style="font-size:12px;color:#8a8a90;font-weight:600;">{{ t.fldEmail }}</div><div style="{{ emailVS }}">{{ infoEmail }}</div></div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ editProfile }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 18px;">
+              <div><label style="font-size:12px;color:#8a8a90;font-weight:600;display:block;margin-bottom:6px;">{{ t.fldName }}</label><input value="{{ pf.name }}" onInput="{{ onPfName }}" style="width:100%;border:1.5px solid #e4e4e7;border-radius:9px;height:44px;padding:0 12px;font-family:inherit;font-size:14.5px;outline:none;color:#26262b;box-sizing:border-box;" /></div>
+              <div><label style="font-size:12px;color:#8a8a90;font-weight:600;display:block;margin-bottom:6px;">{{ t.fldGender }}</label><select value="{{ pf.gender }}" onChange="{{ onPfGender }}" style="width:100%;border:1.5px solid #e4e4e7;border-radius:9px;height:44px;padding:0 10px;font-family:inherit;font-size:14.5px;outline:none;color:#26262b;background:#fff;box-sizing:border-box;"><option value="">{{ t.chooseG }}</option><option value="{{ t.male }}">{{ t.male }}</option><option value="{{ t.female }}">{{ t.female }}</option><option value="{{ t.otherG }}">{{ t.otherG }}</option></select></div>
+              <div><label style="font-size:12px;color:#8a8a90;font-weight:600;display:block;margin-bottom:6px;">{{ t.fldDob }}</label><input value="{{ pf.dob }}" onInput="{{ onPfDob }}" type="date" style="width:100%;border:1.5px solid #e4e4e7;border-radius:9px;height:44px;padding:0 12px;font-family:inherit;font-size:14.5px;outline:none;color:#26262b;box-sizing:border-box;" /></div>
+              <div><label style="font-size:12px;color:#8a8a90;font-weight:600;display:block;margin-bottom:6px;">{{ t.fldEmail }}</label><input value="{{ pf.email }}" onInput="{{ onPfEmail }}" type="email" placeholder="you@example.com" style="width:100%;border:1.5px solid #e4e4e7;border-radius:9px;height:44px;padding:0 12px;font-family:inherit;font-size:14.5px;outline:none;color:#26262b;box-sizing:border-box;" /></div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:20px;">
+              <button onClick="{{ saveProfile }}" style="background:#e5720a;color:#fff;border:none;border-radius:9px;padding:11px 22px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:filter .16s;" style-hover="filter:brightness(1.07);">{{ t.saveBtn }}</button>
+              <button onClick="{{ toggleEditProfile }}" style="background:#f2f2f4;color:#3a3a42;border:none;border-radius:9px;padding:11px 20px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:background .16s;" style-hover="background:#e8e8ec;">{{ t.cancelBtn }}</button>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div onClick="{{ goBookmarks }}" style="background:#fff;border:1px solid #ececf0;border-radius:16px;padding:20px 22px;cursor:pointer;display:flex;align-items:center;gap:15px;transition:border-color .16s,transform .16s;" style-hover="border-color:#e5720a;transform:translateY(-1px);">
+            <span style="width:44px;height:44px;border-radius:11px;background:#fff3e8;display:flex;align-items:center;justify-content:center;flex:none;"><span style="width:15px;height:19px;border:2.5px solid #e5720a;border-bottom:none;position:relative;border-radius:2px 2px 0 0;"><span style="position:absolute;left:-2.5px;right:-2.5px;bottom:-9px;height:9px;background:#fff3e8;"></span><span style="position:absolute;left:1px;bottom:-6px;width:0;height:0;border-left:5.5px solid transparent;border-right:5.5px solid transparent;border-top:7px solid #e5720a;"></span></span></span>
+            <div style="flex:1;"><div style="font-family:'Spectral',serif;font-size:17px;font-weight:700;color:#26262b;">{{ t.savedStories }}</div><div style="font-size:13px;color:#8a8a90;margin-top:2px;">{{ bmCount }} · {{ t.bookmarksSub }}</div></div>
+            <span style="font-size:20px;color:#c0c0c6;">›</span>
+          </div>
+
+          <div style="background:#fff;border:1px solid #ececf0;border-radius:16px;padding:22px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><h3 style="font-family:'Spectral',serif;font-size:17px;font-weight:700;margin:0;">{{ t.subscription }}</h3><span style="font-size:11px;font-weight:800;letter-spacing:.5px;color:#b8443a;background:#fdeceb;padding:4px 10px;border-radius:6px;">{{ t.notSubscribed }}</span></div>
+            <p style="font-size:13px;color:#6a6a72;line-height:1.5;margin:0 0 16px;">{{ t.subDesc }}</p>
+            <button style="width:100%;background:linear-gradient(90deg,#e5720a,#c4530a);color:#fff;border:none;border-radius:10px;padding:12px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:filter .16s,transform .16s;box-shadow:0 6px 16px rgba(229,114,10,.25);" style-hover="filter:brightness(1.07);transform:translateY(-1px);">★ {{ t.subscribeCta }}</button>
+          </div>
+
+          <div style="background:#131316;border-radius:16px;padding:22px;color:#fff;">
+            <h3 style="font-family:'Spectral',serif;font-size:17px;font-weight:700;margin:0 0 6px;">{{ t.newsletterTitle }}</h3>
+            <p style="font-size:13px;color:#b0b0b6;line-height:1.5;margin:0 0 14px;">{{ t.newsletterDesc }}</p>
+            <sc-if value="{{ newsletterOn }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:9px;background:#1f2d22;border:1px solid #2f6b45;border-radius:10px;padding:12px 14px;color:#7fd6a0;font-size:14px;font-weight:700;"><span style="width:20px;height:20px;border-radius:50%;background:#2f9d5b;display:flex;align-items:center;justify-content:center;"><span style="width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-2px;"></span></span>{{ t.subscribedMsg }}</div>
+            </sc-if>
+            <sc-if value="{{ newsletterOff }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;gap:8px;">
+                <input placeholder="you@example.com" style="flex:1;border:none;border-radius:9px;height:44px;padding:0 13px;font-family:inherit;font-size:13.5px;outline:none;min-width:0;" />
+                <button onClick="{{ toggleNewsletter }}" style="background:#e5720a;color:#fff;border:none;border-radius:9px;padding:0 18px;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;flex:none;transition:filter .16s;" style-hover="filter:brightness(1.08);">{{ t.subscribeNl }}</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:22px;margin-top:22px;align-items:start;">
+        <div style="background:#fff;border:1px solid #ececf0;border-radius:16px;padding:24px 26px;">
+          <h2 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:19px;font-weight:700;margin:0 0 4px;">{{ t.interestsTitle }}</h2>
+          <p style="font-size:13px;color:#8a8a90;margin:0 0 18px;">{{ t.interestsSub }}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;">
+            <sc-for list="{{ interestChips }}" as="c" hint-placeholder-count="12">
+              <span onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.tick }}{{ c.label }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid #ececf0;border-radius:16px;padding:24px 26px;">
+          <h2 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:19px;font-weight:700;margin:0 0 4px;">{{ t.prefLocation }}</h2>
+          <p style="font-size:13px;color:#8a8a90;margin:0 0 16px;">{{ t.prefLocationSub }}</p>
+          <div style="display:flex;align-items:center;gap:10px;background:#fff7ef;border:1px solid #f3d9bf;border-radius:10px;padding:11px 14px;margin-bottom:16px;">
+            <span style="width:15px;height:15px;border:2px solid #e5720a;border-radius:50% 50% 50% 0;transform:rotate(-45deg);flex:none;position:relative;"><span style="position:absolute;top:2.5px;left:2.5px;width:5px;height:5px;border-radius:50%;background:#e5720a;"></span></span>
+            <span style="font-size:14px;font-weight:700;color:#26262b;">{{ acctCityLabel }}</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;">
+            <sc-for list="{{ acctCityList }}" as="c" hint-placeholder-count="8">
+              <span onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.name }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ==================== BOOKMARKS ==================== -->
+  <sc-if value="{{ isBookmarks }}" hint-placeholder-val="{{ false }}">
+  <main style="background:#fafafa;min-height:72vh;">
+    <div style="max-width:900px;margin:0 auto;padding:16px 26px;font-size:12.5px;color:#8a8a90;"><span onClick="{{ goHome }}" style="cursor:pointer;">{{ t.home }}</span> › <span onClick="{{ goAccount }}" style="cursor:pointer;">{{ t.accountTitle }}</span> › <span style="color:#26262b;">{{ t.savedStories }}</span></div>
+    <div style="max-width:900px;margin:0 auto;padding:8px 26px 60px;">
+      <h1 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:32px;font-weight:800;margin:0 0 6px;">{{ t.savedStories }}</h1>
+      <p style="font-size:14px;color:#8a8a90;margin:0 0 22px;">{{ bmCount }} · {{ t.bookmarksSub }}</p>
+      <sc-for list="{{ bookmarkList }}" as="item" hint-placeholder-count="4">
+        <article onClick="{{ openArticle }}" style="cursor:pointer;display:grid;grid-template-columns:190px 1fr auto;gap:18px;padding:16px;background:#fff;border:1px solid #ececf0;border-radius:14px;margin-bottom:14px;align-items:center;transition:border-color .16s,transform .16s;" style-hover="border-color:#e5720a;transform:translateY(-1px);">
+          <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:9px;overflow:hidden;background:#eee;"><image-slot id="{{ item.bmSlot }}" shape="rect"></image-slot></div>
+          <div>
+            <span style="font-size:10.5px;font-weight:800;color:{{ item.color }};letter-spacing:.4px;">{{ item.cat }}</span>
+            <h3 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:19px;line-height:1.25;font-weight:700;margin:6px 0 7px;">{{ item.title }}</h3>
+            <span style="font-size:12px;color:#8a8a90;">{{ item.time }}</span>
+          </div>
+          <span style="width:36px;height:36px;border-radius:50%;background:#fff3e8;display:flex;align-items:center;justify-content:center;flex:none;color:#e5720a;font-size:16px;">🔖</span>
+        </article>
+      </sc-for>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- GO TO TOP PILL -->
+  <sc-if value="{{ showGoTop }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ scrollTop }}" style="position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:45;display:flex;align-items:center;gap:9px;background:#131316;color:#fff;border:none;border-radius:999px;padding:11px 21px;font-family:'Noto Sans','Noto Sans Devanagari',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,.3);transition:background .18s,transform .18s;animation:ssFadeUp .3s ease;" style-hover="background:#e5720a;transform:translateX(-50%) translateY(-2px);">
+      <span style="border:solid #fff;border-width:2px 2px 0 0;width:8px;height:8px;transform:rotate(-45deg);display:inline-block;margin-top:3px;"></span>{{ t.goToTop }}
+    </button>
+  </sc-if>
+
+  <!-- ==================== FOOTER ==================== -->
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+  <footer style="background:#131316;color:#c9c9cf;padding:44px 0 0;">
+    <div style="max-width:1300px;margin:0 auto;padding:0 26px;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:34px;padding-bottom:36px;border-bottom:1px solid #26262c;">
+      <div>
+        <div style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:26px;font-weight:800;color:#fff;letter-spacing:-.5px;">Salil Sandesh</div>
+        <div style="font-size:13px;color:#e5720a;font-weight:600;margin:4px 0 14px;font-family:'Noto Serif Devanagari',serif;">स्रोत से समाज तक</div>
+        <p style="font-size:13px;line-height:1.6;color:#9a9aa2;margin:0 0 16px;max-width:280px;">{{ footerAbout }}</p>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;">
+          <sc-for list="{{ socialList }}" as="s" hint-placeholder-count="8">
+            <span style="width:34px;height:34px;border-radius:50%;background:#26262c;display:flex;align-items:center;justify-content:center;cursor:pointer;"><img src="{{ s.iconWhite }}" alt="{{ s.label }}" style="width:16px;height:16px;" /></span>
+          </sc-for>
+        </div>
+      </div>
+      <sc-for list="{{ footerCols }}" as="col" hint-placeholder-count="3">
+        <div>
+          <div style="font-size:13px;font-weight:800;color:#fff;letter-spacing:.5px;margin-bottom:14px;">{{ col.h }}</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ col.items }}" as="li" hint-placeholder-count="5">
+              <span style="font-size:13px;color:#9a9aa2;cursor:pointer;">{{ li }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="max-width:1300px;margin:0 auto;padding:18px 26px 26px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:#7a7a82;">
+      <span>© 2026 Salil Sandesh Media Pvt. Ltd. — All rights reserved.</span>
+      <span style="display:flex;gap:16px;"><span style="cursor:pointer;">Privacy</span><span style="cursor:pointer;">Terms</span><span style="cursor:pointer;">Advertise</span><span style="cursor:pointer;">Contact</span></span>
+    </div>
+  </footer>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1300,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { page:'home', lang:'en', networkOpen:false, hoveredNav:null, activeCat:null,
+    query:'What is causing the record monsoon flooding across India this year?', answered:true, commodityTab:'gold',
+    sidebarOpen:false, weatherTab:'weather', locOpen:false, city:'New Delhi', videoTab:'latest', resultQuery:'Monsoon 2026', searchTab:'all',
+    scrolled:false, catCount:6,
+    loggedIn:false, authPhone:'', otp:'', user:{}, editProfile:false,
+    pf:{ name:'', gender:'', dob:'', email:'' }, newsletterOn:false, bookmarkIds:[0,2,5,7],
+    perkIdx:0, interests:[], acctCity:'New Delhi', srPage:1 };
+
+  go = (page, cat) => { this.setState({ page, activeCat: cat||null, networkOpen:false, hoveredNav:null, sidebarOpen:false, locOpen:false, catCount:6 }); if (typeof window!=='undefined') window.scrollTo({top:0}); };
+
+  componentDidMount(){
+    this._onScroll = () => {
+      const y = window.scrollY || window.pageYOffset || 0;
+      const isDown = y > 140;
+      if (isDown !== this.state.scrolled) this.setState({ scrolled: isDown });
+      // infinite scroll for category pages
+      if (this.state.page === 'category') {
+        const nearBottom = (window.innerHeight + y) >= (document.body.scrollHeight - 700);
+        if (nearBottom && this.state.catCount < 60) this.setState(s => ({ catCount: s.catCount + 5 }));
+      }
+    };
+    window.addEventListener('scroll', this._onScroll, { passive:true });
+    this._onDocDown = (e) => { if (this.state.networkOpen && this.netEl && !this.netEl.contains(e.target)) this.setState({ networkOpen:false }); };
+    document.addEventListener('mousedown', this._onDocDown, true);
+    this._perkTimer = setInterval(() => { if (this.state.page==='signin' || this.state.page==='otp') this.setState(s=>({ perkIdx: s.perkIdx + 1 })); }, 3000);
+  }
+  componentWillUnmount(){ if (this._onScroll) window.removeEventListener('scroll', this._onScroll); if (this._onDocDown) document.removeEventListener('mousedown', this._onDocDown, true); if (this._perkTimer) clearInterval(this._perkTimer); }
+  toggleInterest = (k) => () => this.setState(s=>({ interests: s.interests.includes(k) ? s.interests.filter(x=>x!==k) : [...s.interests, k] }));
+  setAcctCity = (c) => () => this.setState({ acctCity:c, city:c, locOpen:false });
+
+  // ---- network dropdown (hover open, outside-click close) ----
+  openNetwork = () => { if (!this.state.networkOpen) this.setState({ networkOpen:true }); };
+  closeNetwork = () => this.setState({ networkOpen:false });
+  setNetRef = (el) => { this.netEl = el; };
+
+  // ---- auth ----
+  goSignin = () => { if (this.state.loggedIn) this.go('account'); else this.go('signin'); };
+  setAuthPhone = (e) => this.setState({ authPhone: (e.target.value||'').replace(/[^0-9]/g,'').slice(0,10) });
+  sendOtp = () => { if ((this.state.authPhone||'').length >= 10) this.go('otp'); };
+  setOtp = (e) => this.setState({ otp: (e.target.value||'').replace(/[^0-9]/g,'').slice(0,6) });
+  verifyOtp = () => { if ((this.state.otp||'').length === 6){ this.setState({ loggedIn:true, user:{ method:'phone', phone:'+91 '+this.state.authPhone } }); this.go('account'); } };
+  loginGoogle = () => { this.setState({ loggedIn:true, user:{ method:'google', email:'you@gmail.com' } }); this.go('account'); };
+  loginApple = () => { this.setState({ loggedIn:true, user:{ method:'apple', email:'you@icloud.com' } }); this.go('account'); };
+  logout = () => { this.setState({ loggedIn:false, user:{}, editProfile:false, pf:{ name:'', gender:'', dob:'', email:'' }, authPhone:'', otp:'' }); this.go('home'); };
+  toggleEditProfile = () => this.setState(s=>({ editProfile:!s.editProfile, pf: !s.editProfile ? { name:s.user.name||'', gender:s.user.gender||'', dob:s.user.dob||'', email:s.user.email||'' } : s.pf }));
+  setPf = (k) => (e) => { const v = e.target.value; this.setState(s=>({ pf:{ ...s.pf, [k]: v } })); };
+  saveProfile = () => this.setState(s=>({ user:{ ...s.user, name:s.pf.name||s.user.name, gender:s.pf.gender||s.user.gender, dob:s.pf.dob||s.user.dob, email:s.pf.email||s.user.email }, editProfile:false }));
+  goBookmarks = () => this.go('bookmarks');
+  openTrending = (q) => () => { this.setState({ resultQuery:q, searchTab:'all', srPage:1 }); this.go('results'); };
+  setSrPage = (n) => () => { this.setState({ srPage:n }); if (typeof window!=='undefined') window.scrollTo({top:0,behavior:'smooth'}); };
+  srPrev = () => { this.setState(s=>({ srPage: Math.max(1, s.srPage-1) })); if (typeof window!=='undefined') window.scrollTo({top:0,behavior:'smooth'}); };
+  srNext = () => { this.setState(s=>({ srPage: Math.min(8, s.srPage+1) })); if (typeof window!=='undefined') window.scrollTo({top:0,behavior:'smooth'}); };
+  toggleNewsletter = () => this.setState(s=>({ newsletterOn:!s.newsletterOn }));
+  setEn = () => this.setState({ lang:'en' });
+  setHi = () => this.setState({ lang:'hi' });
+  toggleNetwork = () => this.setState(s=>({ networkOpen:!s.networkOpen }));
+  clearHover = () => this.setState({ hoveredNav:null });
+  enterNav = (k) => this.setState({ hoveredNav:k });
+  openArticle = () => this.go('article');
+  onQuery = (e) => this.setState({ query:e.target.value });
+  ask = () => this.setState({ answered:true });
+  goWeather = () => this.go('weather');
+  goEpaper = () => this.go('epaper');
+  goCommodity = (tab) => { this.setState({ commodityTab: tab||'gold' }); this.go('commodity'); };
+  setGold = () => this.setState({ commodityTab:'gold' });
+  setSilver = () => this.setState({ commodityTab:'silver' });
+  openSidebar = () => this.setState({ sidebarOpen:true });
+  closeSidebar = () => this.setState({ sidebarOpen:false });
+  setWeatherTab = (w) => this.setState({ weatherTab:w });
+  toggleLoc = () => this.setState(s=>({ locOpen:!s.locOpen }));
+  setCity = (c) => this.setState({ city:c, locOpen:false });
+  setVideoTab = (v) => { this.setState({ videoTab:v }); if (typeof window!=='undefined') window.scrollTo({top:0}); };
+  setSearchTab = (s) => this.setState({ searchTab:s });
+  onResultQuery = (e) => this.setState({ resultQuery: e.target.value });
+  doSidebarSearch = () => { this.go('results'); };
+
+  rawStories = [
+    { slot:'ss-s1', cat:'NATIONAL', catHi:'देश', color:'#d22b2b', time:'12 min ago', timeHi:'12 मिनट पहले', author:'Aarti Menon',
+      en:'Record Monsoon Fury: 14 Districts On Red Alert As Rivers Breach Danger Mark', hi:'रिकॉर्ड मॉनसून का कहर: नदियों ने पार किया खतरे का निशान, 14 ज़िलों में रेड अलर्ट',
+      exEn:'The IMD warns of extremely heavy rainfall over the next 48 hours as relief teams race to evacuate thousands from low-lying areas.', exHi:'मौसम विभाग ने अगले 48 घंटों में अत्यधिक भारी बारिश की चेतावनी दी है; राहत दल निचले इलाकों से हज़ारों लोगों को निकाल रहे हैं।' },
+    { slot:'ss-s2', cat:'POLITICS', catHi:'राजनीति', color:'#e5720a', time:'34 min ago', timeHi:'34 मिनट पहले', author:'Vikram Rao',
+      en:'Parliament Clears Landmark Data Protection Amendment After Marathon Debate', hi:'लंबी बहस के बाद संसद ने ऐतिहासिक डेटा संरक्षण संशोधन को दी मंज़ूरी',
+      exEn:'The bill sets stricter norms for how companies handle citizen data and introduces steep penalties for violations.', exHi:'विधेयक कंपनियों द्वारा नागरिक डेटा के इस्तेमाल पर सख़्त नियम तय करता है और उल्लंघन पर भारी जुर्माने का प्रावधान करता है।' },
+    { slot:'ss-s3', cat:'BUSINESS', catHi:'बिज़नेस', color:'#1f9d6b', time:'1 hr ago', timeHi:'1 घंटा पहले', author:'Neha Kapoor',
+      en:'Sensex Vaults 1,200 Points To Fresh Record As Foreign Inflows Surge', hi:'विदेशी निवेश बढ़ने से सेंसेक्स 1,200 अंक उछलकर नए रिकॉर्ड पर',
+      exEn:'Banking and IT stocks led the rally as investors cheered strong quarterly earnings and easing inflation data.', exHi:'मज़बूत तिमाही नतीजों और घटती महंगाई के आंकड़ों से बैंकिंग और आईटी शेयरों में तेज़ी रही।' },
+    { slot:'ss-s4', cat:'SPORTS', catHi:'खेल', color:'#2f77d6', time:'2 hr ago', timeHi:'2 घंटे पहले', author:'Rohit Sharma',
+      en:'India Seals Series With Clinical Chase In Rain-Curtailed Thriller', hi:'बारिश से प्रभावित रोमांचक मुकाबले में भारत ने दर्ज की सीरीज़ जीत',
+      exEn:'A composed half-century and disciplined bowling handed the hosts an unassailable lead in the five-match series.', exHi:'संयमित अर्धशतक और अनुशासित गेंदबाज़ी से मेज़बान टीम ने पांच मैचों की सीरीज़ में बढ़त बना ली।' },
+    { slot:'ss-s5', cat:'NATIONAL', catHi:'देश', color:'#d22b2b', time:'3 hr ago', timeHi:'3 घंटे पहले', author:'S. Ramesh',
+      en:'Supreme Court To Hear Pleas On Electoral Reforms Next Week', hi:'सुप्रीम कोर्ट अगले हफ़्ते चुनाव सुधारों पर याचिकाओं पर करेगा सुनवाई',
+      exEn:'A five-judge bench will examine a batch of petitions seeking greater transparency in political funding.', exHi:'पांच जजों की पीठ राजनीतिक चंदे में ज़्यादा पारदर्शिता की मांग वाली याचिकाओं पर विचार करेगी।' },
+    { slot:'ss-s6', cat:'CITIES', catHi:'शहर', color:'#b455c9', time:'3 hr ago', timeHi:'3 घंटे पहले', author:'Priya Nair',
+      en:'Heavy Rain Throws Mumbai Local Trains Out Of Gear; IMD Warns Of More', hi:'भारी बारिश से मुंबई की लोकल ट्रेनें ठप, मौसम विभाग ने दी और चेतावनी',
+      exEn:'Waterlogging on key routes disrupted the morning commute as civic teams deployed pumps across the city.', exHi:'मुख्य मार्गों पर जलभराव से सुबह का सफ़र प्रभावित; नगर निगम की टीमों ने शहर भर में पंप तैनात किए।' },
+    { slot:'ss-s7', cat:'BUSINESS', catHi:'बिज़नेस', color:'#1f9d6b', time:'4 hr ago', timeHi:'4 घंटे पहले', author:'Neha Kapoor',
+      en:'Startup Funding Rebounds: $4.2 Billion Raised In Q2, Says Report', hi:'स्टार्टअप फंडिंग में उछाल: दूसरी तिमाही में जुटाए 4.2 अरब डॉलर — रिपोर्ट',
+      exEn:'Fintech and deep-tech ventures accounted for the bulk of the quarter\u2019s deal value, the report noted.', exHi:'रिपोर्ट के अनुसार तिमाही की अधिकांश डील वैल्यू में फिनटेक और डीप-टेक कंपनियों का योगदान रहा।' },
+    { slot:'ss-s8', cat:'NATIONAL', catHi:'देश', color:'#d22b2b', time:'5 hr ago', timeHi:'5 घंटे पहले', author:'Arjun Das',
+      en:'New Expressway To Cut Delhi\u2013Jaipur Travel Time To Two Hours', hi:'नए एक्सप्रेसवे से दिल्ली\u2013जयपुर का सफ़र घटकर होगा दो घंटे',
+      exEn:'The corridor, opening next month, is expected to ease freight movement across the northern industrial belt.', exHi:'अगले महीने खुलने वाला यह गलियारा उत्तरी औद्योगिक बेल्ट में माल ढुलाई को आसान बनाएगा।' },
+    { slot:'ss-s9', cat:'SCIENCE', catHi:'विज्ञान', color:'#2f9dbf', time:'6 hr ago', timeHi:'6 घंटे पहले', author:'Dr. Meera Iyer',
+      en:'ISRO Sets August Window For Next-Gen Navigation Satellite Launch', hi:'इसरो ने अगस्त में तय की अगली पीढ़ी के नेविगेशन उपग्रह की लॉन्चिंग',
+      exEn:'The satellite will strengthen India\u2019s regional positioning system for aviation and disaster response.', exHi:'यह उपग्रह विमानन और आपदा प्रबंधन के लिए भारत की क्षेत्रीय पोज़िशनिंग प्रणाली को मज़बूत करेगा।' },
+    { slot:'ss-s10', cat:'NATIONAL', catHi:'देश', color:'#d22b2b', time:'7 hr ago', timeHi:'7 घंटे पहले', author:'S. Ramesh',
+      en:'Farmers\u2019 Bodies Announce Nationwide Protest Over MSP Guarantee', hi:'किसान संगठनों ने एमएसपी गारंटी को लेकर देशव्यापी प्रदर्शन का किया ऐलान',
+      exEn:'Union leaders said the agitation will begin next week if talks with the government remain inconclusive.', exHi:'संगठन नेताओं ने कहा कि सरकार से बातचीत बेनतीजा रहने पर अगले हफ़्ते आंदोलन शुरू होगा।' },
+    { slot:'ss-s11', cat:'BUSINESS', catHi:'बिज़नेस', color:'#1f9d6b', time:'8 hr ago', timeHi:'8 घंटे पहले', author:'Neha Kapoor',
+      en:'Rupee Ends Firmer Against Dollar Ahead Of Policy Review', hi:'नीति समीक्षा से पहले डॉलर के मुकाबले मज़बूत हुआ रुपया',
+      exEn:'Traders expect the central bank to hold rates steady while keeping a close watch on food inflation.', exHi:'कारोबारियों को उम्मीद है कि केंद्रीय बैंक दरें स्थिर रखेगा और खाद्य महंगाई पर नज़र बनाए रखेगा।' },
+    { slot:'ss-s12', cat:'POLITICS', catHi:'राजनीति', color:'#e5720a', time:'9 hr ago', timeHi:'9 घंटे पहले', author:'Vikram Rao',
+      en:'Monsoon Session: Opposition Seeks Debate On Inflation And Jobs', hi:'मॉनसून सत्र: विपक्ष ने महंगाई और रोज़गार पर बहस की उठाई मांग',
+      exEn:'Floor leaders met ahead of the session to finalise a joint strategy on key economic issues.', exHi:'सत्र से पहले विपक्षी नेताओं ने प्रमुख आर्थिक मुद्दों पर साझा रणनीति तय करने के लिए बैठक की।' }
+  ];
+
+  rawWorld = [
+    { slot:'ss-w1', cat:'WEST ASIA', catHi:'पश्चिम एशिया', color:'#2f77d6', en:'UN Security Council Meets On Escalating Regional Tensions', hi:'बढ़ते क्षेत्रीय तनाव पर संयुक्त राष्ट्र सुरक्षा परिषद की बैठक' },
+    { slot:'ss-w2', cat:'MARKETS', catHi:'बाज़ार', color:'#2f77d6', en:'Global Markets Mixed As Central Banks Signal Caution', hi:'केंद्रीय बैंकों के सतर्क रुख़ से वैश्विक बाज़ारों में मिलाजुला रुख़' },
+    { slot:'ss-w3', cat:'CLIMATE', catHi:'जलवायु', color:'#2f77d6', en:'Record Heatwave Grips Southern Europe, Wildfires Spread', hi:'दक्षिणी यूरोप रिकॉर्ड लू की चपेट में, फैली जंगल की आग' },
+    { slot:'ss-w4', cat:'TECH', catHi:'टेक', color:'#2f77d6', en:'New Global Pact On AI Safety Signed By 30 Nations', hi:'एआई सुरक्षा पर नया वैश्विक समझौता, 30 देशों ने किए हस्ताक्षर' }
+  ];
+
+  rawOpinion = [
+    { slot:'ss-o1', author:'Kavita Deshpande', role:'Senior Editor, Policy', roleHi:'वरिष्ठ संपादक, नीति', en:'Why India\u2019s Flood Response Needs A Rethink, Not Just Relief', hi:'भारत की बाढ़ नीति को राहत नहीं, नई सोच की ज़रूरत क्यों है' },
+    { slot:'ss-o2', author:'Anand Krishnan', role:'Economics Columnist', roleHi:'अर्थशास्त्र स्तंभकार', en:'The Markets Are Cheering \u2014 But Who Is Being Left Behind?', hi:'बाज़ार झूम रहे हैं \u2014 लेकिन पीछे कौन छूट रहा है?' },
+    { slot:'ss-o3', author:'Farah Sheikh', role:'Contributing Writer', roleHi:'सहयोगी लेखिका', en:'A New Data Law Is Here. Your Privacy Still Isn\u2019t Guaranteed.', hi:'नया डेटा कानून आ गया है, पर आपकी निजता की गारंटी अब भी नहीं' }
+  ];
+
+  rawVideos = [
+    { slot:'ss-v1', dur:'10:59', date:'July 7, 2026', en:'Ground Report: Inside The Flood-Hit Villages Of Assam', hi:'ग्राउंड रिपोर्ट: असम के बाढ़ प्रभावित गांवों से' },
+    { slot:'ss-v2', dur:'24:12', date:'July 7, 2026', en:'Full Debate: Is India Ready For The AI Job Shift?', hi:'पूरी बहस: क्या भारत एआई से नौकरियों के बदलाव के लिए तैयार है?' },
+    { slot:'ss-v3', dur:'6:45', date:'July 6, 2026', en:'Explained: What The New Data Law Means For You', hi:'समझिए: नया डेटा कानून आपके लिए क्या मायने रखता है' },
+    { slot:'ss-v4', dur:'3:20', date:'July 6, 2026', en:'Watch: Dramatic Rescue As NDRF Reaches Stranded Families', hi:'देखें: एनडीआरएफ ने फंसे परिवारों तक पहुंचकर किया नाटकीय रेस्क्यू' },
+    { slot:'ss-v5', dur:'12:05', date:'July 5, 2026', en:'Market Wrap: Sensex At Record \u2014 Where To Invest Now', hi:'मार्केट रैप: रिकॉर्ड पर सेंसेक्स \u2014 अब कहां करें निवेश' },
+    { slot:'ss-v6', dur:'18:30', date:'July 5, 2026', en:'The Big Interview: Finance Minister On Growth And Reforms', hi:'बड़ा इंटरव्यू: वित्त मंत्री से विकास और सुधारों पर बातचीत' }
+  ];
+
+  subcatMap = {
+    india:{ en:['Top News','Politics','Cities','Economy','Education','Elections'], hi:['मुख्य समाचार','राजनीति','शहर','अर्थव्यवस्था','शिक्षा','चुनाव'] },
+    world:{ en:['Americas','Europe','Middle East','Asia-Pacific','Africa','Global Economy'], hi:['अमेरिका','यूरोप','मध्य पूर्व','एशिया-प्रशांत','अफ्रीका','वैश्विक अर्थव्यवस्था'] },
+    business:{ en:['Markets','Companies','Economy','Personal Finance','Startups','Gadgets'], hi:['बाज़ार','कंपनियां','अर्थव्यवस्था','पर्सनल फाइनेंस','स्टार्टअप','गैजेट्स'] },
+    sports:{ en:['Cricket','Football','Tennis','Olympics','Kabaddi','Live Scores'], hi:['क्रिकेट','फुटबॉल','टेनिस','ओलंपिक','कबड्डी','लाइव स्कोर'] },
+    politics:{ en:['Parliament','Elections','Policy','Governance','States','Diplomacy'], hi:['संसद','चुनाव','नीति','शासन','राज्य','कूटनीति'] },
+    opinion:{ en:['Editorials','Columns','Analysis','Interviews','Letters','Blogs'], hi:['संपादकीय','कॉलम','विश्लेषण','साक्षात्कार','पत्र','ब्लॉग'] }
+  };
+
+  dict = {
+    en:{ home:'Home', india:'India', world:'World', politics:'Politics', business:'Business', sports:'Sports', videos:'Videos', opinion:'Opinion',
+      login:'Sign In', subscribe:'Subscribe', liveTv:'LIVE TV', searchShort:'Search', trending:'TRENDING',
+      goToTop:'Back to top',
+      joinTitle:'Join Salil Sandesh', signinGet:'Get started', signinSub:'Sign in or create your free account — it only takes a moment.',
+      mobileLabel:'Mobile Number', continueBtn:'Continue', orLabel:'OR', googleBtn:'Continue with Google', appleBtn:'Continue with Apple',
+      termsNote:'By continuing, you agree to our Terms & Conditions and Privacy Policy.', backHome:'Back to home',
+      verifyTitle:'Verify Account', otpSentTo:'A 6-digit code has been sent to', resendOtp:'Resend code', verifyBtn:'Verify & Continue', editNumber:'Edit',
+      accountTitle:'My Account', basicTag:'BASIC', memberSince:'Member since Jul 2026', profileHint:'Complete your profile to personalise your feed.',
+      generalInfo:'General Information', updateBtn:'Update', saveBtn:'Save changes', cancelBtn:'Cancel',
+      fldName:'Full name', fldGender:'Gender', fldDob:'Date of birth', fldEmail:'Email address', notProvided:'Not added yet',
+      savedStories:'Saved Stories', viewBookmarks:'View bookmarks', bookmarksSub:'Stories you saved to read later',
+      subscription:'Subscription', notSubscribed:'You are not subscribed', subscribeCta:'Go Premium',
+      subDesc:'Unlock ad-light reading, exclusive columns and the full archive.',
+      newsletterTitle:'The Morning Brief', newsletterDesc:'A hand-picked digest in your inbox every morning.', subscribeNl:'Subscribe', subscribedMsg:'Subscribed ✓', logoutBtn:'Log out',
+      noBookmarks:'No saved stories yet.', male:'Male', female:'Female', otherG:'Other', chooseG:'Select', prev:'Prev', next:'Next',
+      interestsTitle:'Customize your feed', interestsSub:'Pick the topics and interest areas you care about — your feed adapts to them.', prefLocation:'Preferred location', prefLocationSub:'Sets your city across the site — top bar, weather and air quality.',
+      sectionLatest:'Latest', fromIndia:'From India', fromWorld:'World', videosLabel:'Top Videos', opinionLabel:'Opinion & Analysis',
+      watchLive:'Watch Live', liveNow:'LIVE', marketWatch:'Market Watch', latestNews:'Latest News', viewAll:'View All',
+      ourNetwork:'Our Network', getApp:'Get the App', followUs:'Follow us on', networkTitle:'The Salil Sandesh Network', networkTag:'One account across every Salil property.', ourBrands:'OUR BRANDS',
+      relatedNews:'Related News', trendingNews:'Trending News', quickLinks:'Quick Links', share:'Share', readTime:'Read Time',
+      reportedBy:'Reported by', editedBy:'Edited by', tags:'Topics', moreStories:'More Top Stories',
+      videosHeading:'Salil Sandesh Videos', videosSub:'Ground reports, debates, interviews and explainers from across India.',
+      latestVideos:'Latest Videos', topVideos:'Top Videos', ourChannels:'Our Channels',
+      askHeading:'Ask Salil Sandesh', askSub:'AI-powered answers from our newsroom, with sources you can trust.', askPh:'Ask anything about the news\u2026',
+      relatedContent:'Related Content', followups:'Follow-up questions', aiNote:'AI-generated summary from Salil Sandesh reporting. Please verify important details.',
+      mostRead:'Most Read', newsletterH:'The Morning Brief', newsletterP:'Get the day\u2019s top stories in your inbox, every morning at 7 AM.', emailPh:'Your email address',
+      epaper:'E-Paper', epaperTitle:'Salil Sandesh E-Paper', epaperSub:'Read the full print edition, page by page \u2014 anytime, anywhere.', goPremium:'Go Premium', premiumSub:'Unlock the complete Salil Sandesh experience, on every device.', perMonth:'/month', subscribeNow:'Subscribe Now', pastEditions:'Past Editions',
+      perk1:'Daily E-Paper', perk1d:'The full print edition delivered every morning at 6 AM.', perk2:'Premium Stories & Archives', perk2d:'Unlimited access to exclusive reports and 10 years of archives.', perk3:'Ad-Lite Experience', perk3d:'Read distraction-free with minimal advertising.', perk4:'Daily Crossword & Sudoku', perk4d:'Sharpen your mind with fresh puzzles every day.',
+      weather:'Weather', aqi:'AQI', hourlyForecast:'Hourly Forecast', weekForecast:'7-Day Forecast', feelsLike:'Feels like', maxL:'Max', minL:'Min', humidity:'Humidity', wind:'Wind', uvIndex:'UV Index', sunrise:'Sunrise', sunset:'Sunset', weatherStoriesL:'Weather Stories', searchLocation:'Search by location',
+      goldRate:'Gold Rate In India', silverRate:'Silver Rate In India', goldNews:'Gold News', priceCalc:'Price Calculator', calcCity:'City / District', calcQuality:'Quality', calcQty:'Quantity', calcResult:'Estimated Value', calculate:'Calculate', gold:'Gold', silver:'Silver', today:'Today', askAi:'Ask AI', menuSearch:'Search for news, photos and videos', chooseDest:'Choose Your Destination', newsUpdates:'News Updates', featuredL:'Featured', moreLinks:'More Links', resultsFor:'News Result(s) for', currentLoc:'Current Location', geoDenied:'Geolocation permission denied or unavailable.', searchDistrict:'Search District' },
+    hi:{ home:'होम', india:'भारत', world:'दुनिया', politics:'राजनीति', business:'बिज़नेस', sports:'खेल', videos:'वीडियो', opinion:'राय',
+      login:'साइन इन', subscribe:'सब्सक्राइब', liveTv:'लाइव टीवी', searchShort:'खोजें', trending:'ट्रेंडिंग',
+      goToTop:'ऊपर जाएँ',
+      joinTitle:'सलिल संदेश से जुड़ें', signinGet:'शुरू करें', signinSub:'साइन इन करें या मुफ़्त खाता बनाएं।',
+      mobileLabel:'मोबाइल नंबर', continueBtn:'आगे बढ़ें', orLabel:'या', googleBtn:'Google से जारी रखें', appleBtn:'Apple से जारी रखें',
+      termsNote:'आगे बढ़ने पर आप हमारी शर्तों और प्राइवेसी नीति से सहमत होते हैं।', backHome:'होम पर लौटें',
+      verifyTitle:'खाता सत्यापित करें', otpSentTo:'6-अंकों का कोड भेजा गया है', resendOtp:'कोड दोबारा भेजें', verifyBtn:'सत्यापित करें', editNumber:'बदलें',
+      accountTitle:'मेरा खाता', basicTag:'बेसिक', memberSince:'सदस्य: जुलाई 2026', profileHint:'अपनी फीड को बेहतर बनाने के लिए प्रोफाइल पूरी करें।',
+      generalInfo:'सामान्य जानकारी', updateBtn:'अपडेट', saveBtn:'सेव करें', cancelBtn:'रद्द करें',
+      fldName:'पूरा नाम', fldGender:'लिंग', fldDob:'जन्म तिथि', fldEmail:'ईमेल', notProvided:'अभी नहीं जोड़ा',
+      savedStories:'सहेजी गई खबरें', viewBookmarks:'बुकमार्क देखें', bookmarksSub:'बाद में पढ़ने के लिए सहेजी खबरें',
+      subscription:'सब्सक्रिप्शन', notSubscribed:'आप सब्सक्राइब नहीं हैं', subscribeCta:'प्रीमियम लें',
+      subDesc:'विज्ञापन-हल्की पढ़ाई, विशेष कॉलम और पूरा आर्काइव अनलॉक करें।',
+      newsletterTitle:'मॉर्निंग ब्रीफ', newsletterDesc:'हर सुबह चुनिंदा खबरें आपके इनबॉक्स में।', subscribeNl:'सब्सक्राइब', subscribedMsg:'सब्सक्राइब्ड ✓', logoutBtn:'लॉग आउट',
+      noBookmarks:'अभी कोई सहेजी खबर नहीं।', male:'पुरुष', female:'महिला', otherG:'अन्य', chooseG:'चुनें', prev:'पिछला', next:'अगला',
+      interestsTitle:'अपनी फ़ीड कस्टमाइज़ करें', interestsSub:'अपनी पसंद के विषय और रुचि क्षेत्र चुनें — आपकी फ़ीड उसी के अनुसार ढलेगी।', prefLocation:'पसंदीदा स्थान', prefLocationSub:'यह पूरे साइट पर आपका शहर तय करता है — टॉप बार, मौसम और वायु गुणवत्ता।',
+      sectionLatest:'ताज़ा', fromIndia:'भारत से', fromWorld:'दुनिया', videosLabel:'टॉप वीडियो', opinionLabel:'राय और विश्लेषण',
+      watchLive:'लाइव देखें', liveNow:'लाइव', marketWatch:'बाज़ार', latestNews:'ताज़ा खबरें', viewAll:'सभी देखें',
+      ourNetwork:'हमारा नेटवर्क', getApp:'ऐप डाउनलोड करें', followUs:'हमें फ़ॉलो करें', networkTitle:'सलिल संदेश नेटवर्क', networkTag:'एक खाता — हर सलिल प्लेटफ़ॉर्म पर।', ourBrands:'हमारे ब्रांड',
+      relatedNews:'संबंधित खबरें', trendingNews:'ट्रेंडिंग', quickLinks:'क्विक लिंक्स', share:'शेयर', readTime:'पढ़ने का समय',
+      reportedBy:'रिपोर्ट', editedBy:'संपादन', tags:'विषय', moreStories:'और मुख्य खबरें',
+      videosHeading:'सलिल संदेश वीडियो', videosSub:'देशभर से ग्राउंड रिपोर्ट, बहस, इंटरव्यू और विश्लेषण।',
+      latestVideos:'नए वीडियो', topVideos:'टॉप वीडियो', ourChannels:'हमारे चैनल',
+      askHeading:'सलिल संदेश से पूछें', askSub:'हमारे न्यूज़रूम से AI-आधारित जवाब, भरोसेमंद स्रोतों के साथ।', askPh:'खबरों के बारे में कुछ भी पूछें\u2026',
+      relatedContent:'संबंधित सामग्री', followups:'आगे के सवाल', aiNote:'सलिल संदेश रिपोर्टिंग से AI-जनित सारांश। कृपया महत्वपूर्ण जानकारी सत्यापित करें।',
+      mostRead:'सबसे ज़्यादा पढ़े गए', newsletterH:'मॉर्निंग ब्रीफ', newsletterP:'दिन की बड़ी खबरें हर सुबह 7 बजे अपने इनबॉक्स में पाएं।', emailPh:'आपका ईमेल पता',
+      epaper:'ई-पेपर', epaperTitle:'सलिल संदेश ई-पेपर', epaperSub:'पूरा प्रिंट संस्करण पढ़ें, पन्ना दर पन्ना \u2014 कभी भी, कहीं भी।', goPremium:'प्रीमियम लें', premiumSub:'हर डिवाइस पर सलिल संदेश का संपूर्ण अनुभव पाएं।', perMonth:'/माह', subscribeNow:'अभी सब्सक्राइब करें', pastEditions:'पिछले संस्करण',
+      perk1:'दैनिक ई-पेपर', perk1d:'पूरा प्रिंट संस्करण हर सुबह 6 बजे आपके पास।', perk2:'प्रीमियम खबरें और आर्काइव', perk2d:'विशेष रिपोर्ट और 10 साल के आर्काइव तक असीमित पहुंच।', perk3:'विज्ञापन-रहित अनुभव', perk3d:'बिना रुकावट, न्यूनतम विज्ञापनों के साथ पढ़ें।', perk4:'रोज़ क्रॉसवर्ड और सुडोकू', perk4d:'रोज़ नई पहेलियों से दिमाग़ को तेज़ करें।',
+      weather:'मौसम', aqi:'AQI', hourlyForecast:'प्रति घंटा पूर्वानुमान', weekForecast:'7-दिन का पूर्वानुमान', feelsLike:'महसूस', maxL:'अधि', minL:'न्यून', humidity:'नमी', wind:'हवा', uvIndex:'यूवी इंडेक्स', sunrise:'सूर्योदय', sunset:'सूर्यास्त', weatherStoriesL:'मौसम की खबरें', searchLocation:'स्थान से खोजें',
+      goldRate:'भारत में सोने का भाव', silverRate:'भारत में चांदी का भाव', goldNews:'सोने की खबरें', priceCalc:'मूल्य कैलकुलेटर', calcCity:'शहर / ज़िला', calcQuality:'शुद्धता', calcQty:'मात्रा', calcResult:'अनुमानित मूल्य', calculate:'गणना करें', gold:'सोना', silver:'चांदी', today:'आज', askAi:'AI से पूछें', menuSearch:'खबरें, फ़ोटो और वीडियो खोजें', chooseDest:'अपना संस्करण चुनें', newsUpdates:'न्यूज़ अपडेट', featuredL:'फ़ीचर्ड', moreLinks:'और लिंक', resultsFor:'न्यूज़ परिणाम', currentLoc:'वर्तमान स्थान', geoDenied:'लोकेशन की अनुमति नहीं मिली या उपलब्ध नहीं है।', searchDistrict:'ज़िला खोजें' }
+  };
+
+  loc(arr){ const hi=this.state.lang==='hi'; return arr.map((s,i)=>({ ...s, title: hi?s.hi:s.en, excerpt: hi? s.exHi : s.exEn, cat: hi&&s.catHi? s.catHi : s.cat, time: hi&&s.timeHi? s.timeHi : s.time })); }
+
+  renderVals(){
+    const hi = this.state.lang==='hi';
+    const t = this.dict[hi?'hi':'en'];
+    const page = this.state.page;
+    const go = this.go;
+
+    const navDef = [
+      ['home', t.home, ()=>go('home'), this.clearHover, false],
+      ['india', t.india, ()=>go('category','india'), ()=>this.enterNav('india'), true],
+      ['world', t.world, ()=>go('category','world'), ()=>this.enterNav('world'), true],
+      ['politics', t.politics, ()=>go('category','politics'), this.clearHover, false],
+      ['business', t.business, ()=>go('category','business'), ()=>this.enterNav('business'), true],
+      ['sports', t.sports, ()=>go('category','sports'), ()=>this.enterNav('sports'), true],
+      ['videos', t.videos, ()=>go('videos'), this.clearHover, false],
+      ['opinion', t.opinion, ()=>go('category','opinion'), this.clearHover, false]
+    ];
+    const active = (k)=> (k==='home'&&page==='home')||(k==='videos'&&page==='videos')||(page==='category'&&this.state.activeCat===k);
+    const nav = navDef.map(([k,label,onClick,onEnter])=>({
+      k, label, onClick, onEnter,
+      style: 'background:none;border:none;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;padding:2px 0;white-space:nowrap;transition:color .22s ease,border-color .22s ease;color:'+(active(k)?'#e5720a':'#26262b')+';border-bottom:2px solid '+(active(k)?'#e5720a':'transparent')+';'
+    }));
+
+    const S = this.loc(this.rawStories);
+    const W = this.loc(this.rawWorld);
+    const O = this.rawOpinion.map(o=>({ ...o, title: hi?o.hi:o.en, role: hi&&o.roleHi? o.roleHi : o.role }));
+    const V = this.rawVideos.map(v=>({ ...v, title: hi?v.hi:v.en }));
+
+    const heroSide = S.slice(1,4).map((s,i)=>({ ...s, slot:'ss-side'+i }));
+    const indiaCards = S.slice(4,7).map((s,i)=>({ ...s, slot:'ss-india'+i }));
+    const worldCards = W.map((s,i)=>({ ...s, slot:'ss-wc'+i }));
+    const videosHome = V.slice(0,4).map((v,i)=>({ ...v, slot:'ss-vh'+i }));
+    const megaStories = S.slice(0,4).map((s,i)=>({ ...s, megaSlot:'ss-mega'+i }));
+    const latestList = S.slice(4,9).map((s,i)=>({ ...s, rank:i+1 }));
+
+    const market = [
+      { n:'SENSEX', v:'81,240.55', ch:'+1.42%', up:true },
+      { n:'NIFTY 50', v:'24,782.10', ch:'+1.18%', up:true },
+      { n:'GOLD 10g', v:'98,240', ch:'+0.6%', up:true },
+      { n:'USD / INR', v:'83.18', ch:'-0.12%', up:false },
+      { n:'CRUDE', v:'$71.40', ch:'-0.8%', up:false }
+    ].map(m=>({ ...m, chColor: m.up?'#1f9d6b':'#d22b2b' }));
+
+    // article
+    const bodyTop = hi ? [
+      'मौसम विभाग ने सोमवार को 14 ज़िलों में रेड अलर्ट जारी किया, क्योंकि सप्ताहांत की लगातार बारिश ने कई नदियों को खतरे के निशान से ऊपर पहुंचा दिया और हज़ारों लोगों को घर छोड़ने पर मजबूर कर दिया।',
+      'एनडीआरएफ और सेना की टीमों के साथ राज्य आपदा राहत बल सबसे प्रभावित निचले इलाकों में तैनात किए गए हैं। अधिकारियों ने बताया कि जलस्तर बढ़ने के साथ अब तक 40,000 से अधिक लोगों को राहत शिविरों में पहुंचाया गया है।'
+    ] : [
+      'The India Meteorological Department (IMD) escalated its warning to a red alert across 14 districts on Monday, as relentless weekend rainfall pushed several rivers past their danger marks and forced thousands from their homes.',
+      'State disaster response teams, backed by NDRF and army units, have been deployed to the worst-hit low-lying areas. Officials confirmed that more than 40,000 people have been moved to relief camps as water levels continue to rise.'
+    ];
+    const bodyBottom = hi ? [
+      'मौसम विशेषज्ञों का कहना है कि क्षेत्र पर बना गहरा कम दबाव का क्षेत्र अगले कम-से-कम 48 घंटे तक अत्यधिक भारी बारिश बनाए रख सकता है, जिसके बाद सप्ताह के मध्य में यह धीरे-धीरे कमज़ोर होगा।',
+      'प्रशासन ने प्रभावित ज़िलों में स्कूल-कॉलेज बंद कर दिए हैं और लोगों से गैर-ज़रूरी यात्रा से बचने की अपील की है।'
+    ] : [
+      'Forecasters say a deep low-pressure system over the region is likely to sustain extremely heavy showers for at least another 48 hours before gradually weakening midweek.',
+      'Authorities have suspended schools and colleges in the affected districts and issued advisories urging residents to avoid all non-essential travel.'
+    ];
+    const article = {
+      cat: S[0].cat, title: S[0].title, excerpt: S[0].excerpt,
+      author: 'Aarti Menon, Praveen Kumar', editor: hi?'देव शर्मा':'Dev Sharma',
+      dateStr: hi?'7 जुलाई 2026, दोपहर 1:25':'Jul 07, 2026 13:25 IST', readTime: hi?'4 मिनट':'4 mins',
+      caption: hi?'बचावकर्मी बाढ़ प्रभावित इलाके में फंसे लोगों को सुरक्षित निकालते हुए। (प्रतीकात्मक तस्वीर)':'Rescue workers evacuate residents from a flood-hit locality. (Representative image)',
+      bodyTop, bodyBottom,
+      pullQuote: hi?'\u201cयह पिछले एक दशक की सबसे गंभीर मॉनसून घटनाओं में से एक है। बचाव और राहत के लिए हर उपलब्ध संसाधन झोंक दिया गया है।\u201d':'\u201cWe are treating this as one of the most severe monsoon events in a decade. Every available resource has been mobilised for rescue and relief.\u201d',
+      pullAuthor: hi?'\u2014 राज्य आपदा प्रबंधन प्राधिकरण':'\u2014 State Disaster Management Authority',
+      embedCaption: hi?'ड्रोन फुटेज में बाढ़ में डूबे गांवों का नज़ारा।':'Drone footage shows villages submerged by the rising waters.',
+      tags: hi?['मॉनसून 2026','बाढ़','मौसम विभाग','एनडीआरएफ','आपदा']:['Monsoon 2026','Floods','IMD','NDRF','Disaster Relief'],
+      related: S.slice(1,4),
+      more: S.slice(5,8).map((s,i)=>({ ...s, moreSlot:'ss-more'+i }))
+    };
+
+    const quickLinks = hi ? ['ताज़ा खबरें','शिक्षा','बिज़नेस','खेल','मौसम','राशिफल'] : ['Latest News','Education','Business','Sports','Weather','Live Scores'];
+
+    // videos page
+    const vt = this.state.videoTab;
+    const videoTabsDef = [ ['livetv', hi?'लाइव टीवी':'Live TV'], ['latest', hi?'नए वीडियो':'Latest Videos'], ['categories', hi?'श्रेणियाँ':'Categories'], ['shorts','Shorts'], ['top', hi?'टॉप वीडियो':'Top Videos'] ];
+    const videoNav = videoTabsDef.map(([key,label])=>({ key, label, style:'padding:12px 14px;border-radius:9px;font-size:14.5px;font-weight:600;cursor:pointer;margin-bottom:5px;display:flex;align-items:center;gap:10px;color:'+(key===vt?'#fff':'#b0b0b6')+';background:'+(key===vt?'linear-gradient(90deg,#e5720a,#c4530a)':'transparent')+';', onClick:()=>this.setVideoTab(key) }));
+    const videosLatest = V.slice(0,3).map((v,i)=>({ ...v, slot:'ss-vl'+i }));
+    const videosTop = V.slice(2,6).map((v,i)=>({ ...v, slot:'ss-vt'+i }));
+    const channels = [
+      { name: hi?'सलिल हिन्दी':'Salil Hindi', bg:'#7a1f1f' },
+      { name: hi?'सलिल इंग्लिश':'Salil English', bg:'#1f3a7a' },
+      { name: hi?'बिज़नेस':'Salil Business', bg:'#1f5a3a' },
+      { name: hi?'मराठी':'Salil Marathi', bg:'#8a5a1f' },
+      { name: hi?'खेल':'Salil Sports', bg:'#5a1f6a' },
+      { name: hi?'MP-CG':'Salil MP-CG', bg:'#2f5a6a' }
+    ];
+
+    // search page
+    const aiParas = hi ? [
+      'इस साल भारत में रिकॉर्ड बाढ़ का मुख्य कारण असामान्य रूप से सक्रिय मॉनसून प्रणाली है, जो लगातार बने कम दबाव के क्षेत्रों और बंगाल की खाड़ी से आ रही नमी के कारण बनी हुई है।',
+      'सलिल संदेश की रिपोर्टिंग के अनुसार, तीन प्रमुख कारक इस स्थिति के लिए ज़िम्मेदार हैं:'
+    ] : [
+      'The record flooding across India this year is primarily driven by an unusually active monsoon system, sustained by a series of low-pressure areas and a strong moisture surge from the Bay of Bengal.',
+      'According to Salil Sandesh reporting, three key factors are behind the current crisis:'
+    ];
+    const aiBullets = hi ? [
+      { h:'लगातार भारी बारिश:', t:'कई राज्यों में सामान्य से 40% अधिक बारिश दर्ज की गई।' },
+      { h:'नदियों का उफान:', t:'प्रमुख नदियां खतरे के निशान से ऊपर बह रही हैं।' },
+      { h:'शहरी जलभराव:', t:'पुरानी जल निकासी व्यवस्था दबाव झेल नहीं पा रही।' }
+    ] : [
+      { h:'Sustained heavy rainfall:', t:'many states have recorded over 40% more rain than normal.' },
+      { h:'Rivers in spate:', t:'major rivers are flowing well above their danger marks.' },
+      { h:'Urban waterlogging:', t:'ageing drainage systems are struggling to cope with the volume.' }
+    ];
+    const searchRelated = S.slice(0,2).map((s,i)=>({ ...s, searchSlot:'ss-sr'+i }));
+    const followups = hi ? ['अगले 48 घंटों में किन राज्यों में सबसे ज़्यादा ख़तरा है?','सरकार की राहत तैयारियां क्या हैं?','पिछले दशक की बाढ़ की तुलना में यह कितनी गंभीर है?'] : ['Which states are most at risk over the next 48 hours?','What relief measures has the government announced?','How does this compare to floods over the past decade?'];
+
+    // category page (themed per section)
+    const themes = {
+      india:{ accent:'#f2a33c', grad:'linear-gradient(120deg,#6e2a0d 0%,#a83c0f 46%,#1c7a45 100%)' },
+      world:{ accent:'#68b0e8', grad:'linear-gradient(120deg,#0c2340 0%,#123a63 55%,#1f6fb0 100%)' },
+      politics:{ accent:'#d4af37', grad:'linear-gradient(120deg,#2e0f1a 0%,#5a1d2e 55%,#7e2b3f 100%)' },
+      business:{ accent:'#37d99a', grad:'linear-gradient(120deg,#062018 0%,#0d3b29 55%,#146b46 100%)' },
+      sports:{ accent:'#ff8a2b', grad:'linear-gradient(120deg,#3a1704 0%,#8a3a08 50%,#d4600f 100%)' },
+      opinion:{ accent:'#3fb6a6', grad:'linear-gradient(120deg,#0c2926 0%,#124440 55%,#1c6a60 100%)' }
+    };
+    const catKey = this.state.activeCat || 'india';
+    const catLabel = t[catKey] || t.india;
+    const theme = themes[catKey] || themes.india;
+    const catAccent = theme.accent;
+    const bannerStyle = 'position:relative;overflow:hidden;color:#fff;padding:42px 0 38px;background:'+theme.grad+';';
+    const chipStyle = 'border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:7px 15px;font-size:13px;font-weight:600;color:#fff;cursor:pointer;background:rgba(255,255,255,.08);';
+    const catIndia=catKey==='india', catWorld=catKey==='world', catPolitics=catKey==='politics', catBusiness=catKey==='business', catSports=catKey==='sports';
+    const catLead = S[0];
+    const catSrc = S.slice(1);
+    const catList = Array.from({length: this.state.catCount}, (_, i) => {
+      const s = catSrc[i % catSrc.length];
+      return { ...s, catSlot:'ss-cat'+(i % 6) };
+    });
+    const catSub = hi ? catLabel+' से जुड़ी ताज़ा खबरें, विश्लेषण और ग्राउंड रिपोर्ट \u2014 एक ही जगह।' : 'The latest news, analysis and ground reports on '+catLabel+', all in one place.';
+    const catSubtopics = (this.subcatMap[catKey] || this.subcatMap.india)[hi?'hi':'en'];
+
+    const trendingLabels = hi ? ['मॉनसून 2026','बजट सत्र','IND vs AUS','सोने का भाव','विधानसभा चुनाव','AI और नौकरियाँ'] : ['Monsoon 2026','Budget Session','IND vs AUS','Gold Rate','Assembly Elections','AI & Jobs'];
+    const trendingChips = trendingLabels.map(c=>({ label:c, onClick:this.openTrending(c) }));
+    const networkBrands = [
+      { name:'Salil Sandesh', c:'#e5720a' }, { name: hi?'हिन्दी':'Hindi', c:'#9a9aa2' }, { name:'World', c:'#2f77d6' }, { name:'Business', c:'#1f9d6b' },
+      { name:'Sports', c:'#d22b2b' }, { name:'Movies', c:'#b455c9' }, { name:'Lifestyle', c:'#e0a92e' }, { name:'Health', c:'#2f77d6' },
+      { name:'Tech', c:'#e5720a' }, { name:'Education', c:'#1f9d6b' }, { name:'Marathi', c:'#d22b2b' }, { name:'Weather', c:'#2f9dbf' }
+    ];
+    const footerCols = [
+      { h: hi?'सेक्शन':'SECTIONS', items:[t.india,t.world,t.business,t.sports,t.opinion] },
+      { h: hi?'ज़्यादा':'MORE', items: hi?['वीडियो','मौसम','शिक्षा','लाइफस्टाइल','तकनीक']:['Videos','Weather','Education','Lifestyle','Technology'] },
+      { h: hi?'कंपनी':'COMPANY', items: hi?['हमारे बारे में','संपर्क','करियर','विज्ञापन','फीडबैक']:['About Us','Contact','Careers','Advertise','Feedback'] }
+    ];
+
+    // ---- e-paper ----
+    const epaper = {
+      title: t.epaperTitle, sub: t.epaperSub,
+      dateLine: hi?'नई दिल्ली • सोमवार, 7 जुलाई 2026 • वर्ष 12 • अंक 188':'NEW DELHI • MONDAY, 7 JULY 2026 • VOL 12 • NO. 188',
+      price:'\u20b9149', lead: S[0], body: bodyTop.concat(bodyBottom)
+    };
+    const epaperPerks = [
+      { h:t.perk1, d:t.perk1d, isPaper:true, isGem:false, isAdlite:false, isGrid:false },
+      { h:t.perk2, d:t.perk2d, isPaper:false, isGem:true, isAdlite:false, isGrid:false },
+      { h:t.perk3, d:t.perk3d, isPaper:false, isGem:false, isAdlite:true, isGrid:false },
+      { h:t.perk4, d:t.perk4d, isPaper:false, isGem:false, isAdlite:false, isGrid:true }
+    ];
+    const pastEditions = [0,1,2,3].map(i=>({ slot:'ss-ed'+i, label:['Jul 06','Jul 05','Jul 04','Jul 03'][i] }));
+
+    // ---- weather ----
+    const wi = (ty)=>({ isSun:ty==='sun', isCloud:ty==='cloud', isRain:ty==='rain' });
+    const hourly = [['13:00','28\u00b0','rain'],['14:00','31\u00b0','cloud'],['15:00','30\u00b0','cloud'],['16:00','30\u00b0','sun'],['17:00','30\u00b0','sun'],['18:00','29\u00b0','cloud'],['19:00','28\u00b0','rain'],['20:00','27\u00b0','rain'],['21:00','27\u00b0','cloud'],['22:00','27\u00b0','cloud']].map(([time,temp,ty])=>({ time, temp, ...wi(ty) }));
+    const dEn=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], dHi=['सोम','मंगल','बुध','गुरु','शुक्र','शनि','रवि'];
+    const daily = [['35\u00b0','28\u00b0','rain',hi?'हल्की बारिश':'Moderate rain'],['34\u00b0','27\u00b0','rain',hi?'भारी बारिश':'Heavy rain'],['33\u00b0','27\u00b0','cloud',hi?'बादल':'Cloudy'],['34\u00b0','28\u00b0','cloud',hi?'आंशिक बादल':'Partly cloudy'],['36\u00b0','28\u00b0','sun',hi?'धूप':'Sunny'],['35\u00b0','27\u00b0','sun',hi?'धूप':'Sunny'],['33\u00b0','26\u00b0','rain',hi?'बौछारें':'Showers']].map((d,i)=>({ day: hi?dHi[i]:dEn[i], hiT:d[0], lo:d[1], cond:d[3], ...wi(d[2]) }));
+    const weather = { city: this.state.city, cond: hi?'हल्की बारिश, आसमान में बादल':'Moderate rain with overcast sky', date: hi?'आज, 7 जुलाई 2026':'Today, 7 July 2026', temp:'34\u00b0', max:'35\u00b0', min:'28\u00b0', feels:'43\u00b0', humidity:'78%', wind:'12 km/h', uv: hi?'मध्यम':'Moderate', aqiVal:'168', aqiCat: hi?'अस्वस्थ':'Unhealthy', sunrise:'05:29', sunset:'19:23', dayLen: hi?'13 घं 54 मि':'13 hr 54 min' };
+    const weatherStories = S.slice(0,5).map((s,i)=>({ ...s, wSlot:'ss-ws'+i }));
+
+    // ---- gold / silver ----
+    const isGold = this.state.commodityTab==='gold';
+    const cInk = isGold?'#4a3a08':'#2b2f34';
+    const commodityCards = (isGold ? [
+      { k: hi?'24K सोना / ग्राम':'24K Gold / g', v:'\u20b99,824', ch:'-76' },
+      { k: hi?'22K सोना / ग्राम':'22K Gold / g', v:'\u20b99,006', ch:'-70' },
+      { k: hi?'18K सोना / ग्राम':'18K Gold / g', v:'\u20b97,372', ch:'-58' }
+    ] : [
+      { k: hi?'चांदी 999 / ग्राम':'Silver 999 / g', v:'\u20b9112', ch:'+1.2' },
+      { k: hi?'चांदी / 10 ग्राम':'Silver / 10g', v:'\u20b91,123', ch:'+12' },
+      { k: hi?'चांदी / किग्रा':'Silver / kg', v:'\u20b91,12,300', ch:'+1,240' }
+    ]).map(c=>({ ...c, chColor: c.ch.trim().charAt(0)==='-'?'#b03a2e':'#1f7a44' }));
+    const commodity = {
+      isGold, ink:cInk,
+      heading: isGold ? t.goldRate : t.silverRate,
+      newsHeading: isGold ? t.goldNews : (hi?'चांदी की खबरें':'Silver News'),
+      grad: isGold ? 'linear-gradient(120deg,#8a6a12 0%,#caa53a 45%,#e8cf7a 100%)' : 'linear-gradient(120deg,#5c6066 0%,#9aa0a8 45%,#cdd2d8 100%)',
+      desc: isGold ? (hi?'भारत में आज 24 कैरेट (99.9% शुद्धता) सोने का भाव \u20b99,824 प्रति ग्राम, 22 कैरेट (91.6%) \u20b99,006 और 18 कैरेट (75%) \u20b97,372 प्रति ग्राम है। सोने की कीमतें आभूषण, निवेश और बचत के फ़ैसलों को सीधे प्रभावित करती हैं।':'Today\u2019s gold price in India is \u20b99,824 per gram for 24-karat (99.9% purity), \u20b99,006 for 22-karat (91.6%) and \u20b97,372 for 18-karat (75%). Gold prices directly influence jewellery purchases, investment decisions and how households plan their savings.') : (hi?'भारत में आज 999 शुद्धता की चांदी का भाव \u20b9112 प्रति ग्राम और \u20b91,12,300 प्रति किलोग्राम है। औद्योगिक मांग और वैश्विक संकेत चांदी की कीमतों को प्रभावित करते हैं।':'Today\u2019s silver price in India is \u20b9112 per gram for 999 purity and \u20b91,12,300 per kilogram. Industrial demand and global cues drive silver prices.'),
+      cards: commodityCards
+    };
+    const commodityNews = [S[2],S[6],S[10]].map((s,i)=>({ ...s, cSlot:'ss-cn'+i }));
+    const commodityCalc = { cities:['New Delhi','Mumbai','Chennai','Kolkata','Bengaluru'], qualities: isGold?['24 Karat','22 Karat','18 Karat']:['999 Fine','925 Sterling'], result: isGold?'\u20b998,240':'\u20b91,123' };
+    const swActive='padding:8px 24px;border-radius:999px;font-size:14px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.92);color:'+cInk+';box-shadow:0 1px 4px rgba(0,0,0,.18);';
+    const swIdle='padding:8px 24px;border-radius:999px;font-size:14px;font-weight:700;cursor:pointer;background:transparent;color:'+cInk+';opacity:.65;';
+    const commoditySwatchGold = isGold?swActive:swIdle;
+    const commoditySwatchSilver = isGold?swIdle:swActive;
+
+    // ---- sidebar ----
+    const sidebarTopics = {
+      dest: hi?['हिन्दी','मराठी','MPCG','राजस्थान']:['Hindi','Marathi','MPCG','Rajasthan'],
+      updates: hi?['लाइव टीवी','स्पॉटलाइट','ताज़ा','पॉडकास्ट','प्रॉफ़िट','क्रिकेट','भारत','बीप्स','वीडियो','लाइफस्टाइल','मूवीज़','शहर']:['Live TV','Spotlight','Latest','Podcast','Profit','Cricket','India','Beeps','Video','Lifestyle','Movies','Cities'],
+      featured: hi?['नोटिफिकेशन','वेब स्टोरीज़','फ़ीचर','ओपिनियन','ट्रेंड्स']:['Notifications','Web Stories','Feature','Opinion','Trends'],
+      more: hi?['ऑफ़बीट','साउथ','टेक','खेल','टीवी शेड्यूल','साइंस','शिक्षा','फ़ूड','हेल्थ','टूलबॉक्स']:['Offbeat','South','Tech','Sports','TV Schedule','Science','Education','Food','Health','Toolbox']
+    };
+    const liPath = 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z';
+    const liSvg = (c)=>'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="'+c+'"><path d="'+liPath+'"/></svg>');
+    const socialList = [ {slug:'facebook',label:'Facebook'},{slug:'x',label:'Twitter'},{slug:'instagram',label:'Instagram'},{slug:'linkedin',label:'LinkedIn'},{slug:'youtube',label:'YouTube'},{slug:'whatsapp',label:'WhatsApp'},{slug:'threads',label:'Threads'},{slug:'snapchat',label:'Snapchat'} ].map(s=>({ ...s, iconColor: s.slug==='linkedin'? liSvg('#0A66C2') : 'https://cdn.simpleicons.org/'+s.slug, iconWhite: s.slug==='linkedin'? liSvg('#ffffff') : 'https://cdn.simpleicons.org/'+s.slug+'/ffffff' }));
+
+    // ---- location + AQI ----
+    const locations = ['Thiruvananthapuram','Agra','Bulandshahr','Delhi','New Delhi','Mumbai','Bhopal','Kolkata','Chennai','Bengaluru','Jaipur','Lucknow','Pune'].map(n=>({ name:n, onClick:()=>this.setCity(n) }));
+    const cityAqiMap = { 'New Delhi':115,'Delhi':115,'Mumbai':78,'Bhopal':46,'Kolkata':168,'Chennai':92,'Bengaluru':48,'Jaipur':132,'Lucknow':156,'Agra':121,'Pune':64,'Thiruvananthapuram':38,'Bulandshahr':143 };
+    const aqiScale = [
+      { label: hi?'अच्छा':'Good', range:'0 - 50', color:'#6bbf59', max:50 },
+      { label: hi?'मध्यम':'Moderate', range:'51 - 100', color:'#e6c14a', max:100 },
+      { label: hi?'ख़राब':'Poor', range:'101 - 150', color:'#e08a3c', max:150 },
+      { label: hi?'अस्वस्थ':'Unhealthy', range:'151 - 200', color:'#e0708c', max:200 },
+      { label: hi?'गंभीर':'Severe', range:'201 - 300', color:'#9b6cc0', max:300 },
+      { label: hi?'ख़तरनाक':'Hazardous', range:'300+', color:'#b8443a', max:99999 }
+    ];
+    const curCity = this.state.city;
+    const aqiVal = cityAqiMap[curCity] || 115;
+    const aqiInfo = aqiScale.find(s=>aqiVal<=s.max) || aqiScale[2];
+    const aqi = { city:curCity, val:aqiVal, label:aqiInfo.label, color:aqiInfo.color, pm10:aqiVal, pm25:Math.round(aqiVal*0.55) };
+    const aqiChartMax = 260;
+    const last7 = [[235,142],[115,86],[144,94],[152,127],[195,152],[134,79],[126,98]].map((d,i)=>({ day:(hi?['जून 30','जुल 01','जुल 02','जुल 03','जुल 04','जुल 05','जुल 06']:['Jun 30','Jul 01','Jul 02','Jul 03','Jul 04','Jul 05','Jul 06'])[i], maxH:Math.round(d[0]/aqiChartMax*100), minH:Math.round(d[1]/aqiChartMax*100), maxV:d[0], minV:d[1] }));
+    const pollutants = [
+      { name: hi?'पार्टिकुलेट मैटर (PM2.5)':'Particulate Matter (PM2.5)', val:Math.round(aqiVal*0.55), unit:'µg/M³', bg:'#eaf3fb' },
+      { name: hi?'पार्टिकुलेट मैटर (PM10)':'Particulate Matter (PM10)', val:aqiVal, unit:'µg/M³', bg:'#eef4fb' },
+      { name: hi?'कार्बन मोनोऑक्साइड (CO)':'Carbon Monoxide (CO)', val:12, unit:'ppb', bg:'#fdf3e3' },
+      { name: hi?'सल्फर डाइऑक्साइड (SO2)':'Sulfur Dioxide (SO2)', val:4, unit:'Mb', bg:'#fdecec' },
+      { name: hi?'नाइट्रोजन डाइऑक्साइड (NO2)':'Nitrogen Dioxide (NO2)', val:21, unit:'ppb', bg:'#eef4fb' },
+      { name: hi?'ओज़ोन (O3)':'Ozone (O3)', val:33, unit:'ppb', bg:'#eafaf1' }
+    ];
+    const weatherTab = this.state.weatherTab;
+
+    // ---- category header video ----
+    const catVideos = { india:'assets/vid-india.mp4', world:'assets/vid-world.mp4', politics:'assets/vid-politics.mp4', business:'assets/vid-business.mp4', sports:'assets/vid-sports.mp4' };
+    const catVideo = catVideos[catKey] || '';
+    const catHasVideo = !!catVideo;
+    const edgeMap = { india:'#6e2a0d', world:'#0c2340', politics:'#2e0f1a', business:'#062018', sports:'#3a1704', opinion:'#0c2926' };
+    const catEdge = edgeMap[catKey] || '#131316';
+    const hx = (h,a)=>{ const n=h.replace('#',''); return 'rgba('+parseInt(n.slice(0,2),16)+','+parseInt(n.slice(2,4),16)+','+parseInt(n.slice(4,6),16)+','+a+')'; };
+    const bannerVeil = 'linear-gradient(90deg,'+catEdge+' 0%,'+hx(catEdge,.94)+' 28%,'+hx(catEdge,.62)+' 58%,'+hx(catEdge,.34)+' 100%)';
+
+    // ---- videos (OTT) ----
+    const vtLive=vt==='livetv', vtLatest=vt==='latest', vtCat=vt==='categories', vtShorts=vt==='shorts', vtTop=vt==='top';
+    const vtNotShorts = vt!=='shorts';
+    const featured = { ...V[0], slot:'ss-vfeat' };
+    const videoRows = [
+      { title: hi?'ट्रेंडिंग नाउ':'Trending Now', items: V.map((v,i)=>({ ...v, slot:'ss-vra'+i })) },
+      { title: hi?'अभी जोड़े गए':'Recently Added', items: V.slice().reverse().map((v,i)=>({ ...v, slot:'ss-vrb'+i })) },
+      { title: hi?'एडिटर के चुनिंदा':'Editor\u2019s Picks', items: V.slice(1).concat(V.slice(0,1)).map((v,i)=>({ ...v, slot:'ss-vrc'+i })) }
+    ];
+    const videoCats = [ [hi?'समाचार':'News','#d22b2b'],[hi?'राजनीति':'Politics','#d4af37'],[hi?'बिज़नेस':'Business','#1f9d6b'],[hi?'खेल':'Sports','#e5720a'],[hi?'दुनिया':'World','#2f77d6'],[hi?'मनोरंजन':'Entertainment','#b455c9'] ].map((c,i)=>({ name:c[0], c:c[1], slot:'ss-vcat'+i }));
+    const videosTopBig = V.slice(0,6).map((v,i)=>({ ...v, rank:i+1, slot:'ss-vtb'+i }));
+    const liveChannels = channels.map((c,i)=>({ ...c, slot:'ss-vlc'+i }));
+    const shorts = [
+      { slot:'ss-short0', title: hi?'वायनाड भूस्खलन: राहत अभियान जारी':'Wayanad landslide: rescue ops underway', author:'@salilsandesh', likes:'12.4K', comments:'820', tag:'#Monsoon2026' },
+      { slot:'ss-short1', title: hi?'सेंसेक्स रिकॉर्ड ऊंचाई पर':'Sensex hits a fresh record high', author:'@salil.business', likes:'8.1K', comments:'340', tag:'#Markets' },
+      { slot:'ss-short2', title: hi?'रोमांचक मुकाबले में भारत की जीत':'India wins a last-ball thriller', author:'@salil.sports', likes:'23.6K', comments:'1.2K', tag:'#Cricket' },
+      { slot:'ss-short3', title: hi?'संसद में डेटा बिल पास':'Data bill cleared in Parliament', author:'@salil.politics', likes:'5.9K', comments:'410', tag:'#Parliament' },
+      { slot:'ss-short4', title: hi?'ISRO की अगली बड़ी लॉन्चिंग':'ISRO\u2019s next big launch, explained', author:'@salil.science', likes:'15.2K', comments:'690', tag:'#ISRO' }
+    ];
+
+    // ---- search results ----
+    const resultQuery = this.state.resultQuery;
+    const searchTab = this.state.searchTab;
+    const searchTabs = (hi?['सभी','समाचार','वीडियो','फ़ोटो','वेब स्टोरीज़']:['All','News','Videos','Photos','Web Stories']).map((label,i)=>{ const key=['all','news','videos','photos','web'][i]; const on=key===this.state.searchTab; return { label, key, onClick:()=>this.setSearchTab(key), style:'padding:7px 16px;border-radius:999px;font-size:13.5px;font-weight:700;cursor:pointer;border:1px solid '+(on?'#2f77d6':'#e2e2e2')+';background:'+(on?'#2f77d6':'#fff')+';color:'+(on?'#fff':'#3a3a42')+';' }; });
+    const results = S.slice(0,6).map((s,i)=>({ ...s, rSlot:'ss-res'+i, source:['sports.salilsandesh.com','salilsandesh.com/health','salilsandesh.com','gadgets.salilsandesh.com','salilsandesh.com/india','salilsandesh.com/world'][i], rdate:['Tuesday, 7 July 2026','Monday, 6 July 2026','Sunday, 5 July 2026','Friday, 3 July 2026','Thursday, 2 July 2026','Wednesday, 1 July 2026'][i] }));
+    const trendingSide = S.slice(2,5).map((s,i)=>({ ...s, tSlot:'ss-trs'+i }));
+    const stab = this.state.searchTab;
+    const srList = stab==='all' || stab==='news';
+    const srVideos = stab==='videos';
+    const srPhotos = stab==='photos';
+    const srWeb = stab==='web';
+    const searchVideos = S.slice(0,6).map((s,i)=>({ ...s, vSlot:'ss-sv'+i, dur:['4:12','2:35','8:01','1:20','5:44','3:09'][i] }));
+    const searchPhotos = S.slice(0,8).map((s,i)=>({ ...s, pSlot:'ss-sp'+i }));
+    const searchWeb = S.slice(0,6).map((s,i)=>({ ...s, wSlot2:'ss-sw'+i }));
+    const srCountLabel = stab==='videos' ? (hi?'वीडियो':'videos') : stab==='photos' ? (hi?'फ़ोटो':'photos') : stab==='web' ? (hi?'वेब स्टोरीज़':'web stories') : (hi?'परिणाम':'results');
+    const srPageNum = this.state.srPage;
+    const pgBase = 'min-width:38px;height:38px;padding:0 6px;border-radius:9px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;';
+    const srPages = [1,2,3,4,5].map(n=>({ n, onClick:this.setSrPage(n), style: pgBase+'border:1px solid '+(n===srPageNum?'#e5720a':'#e2e2e6')+';background:'+(n===srPageNum?'#e5720a':'#fff')+';color:'+(n===srPageNum?'#fff':'#3a3a42')+';' }));
+    const srArrow = (enabled)=> pgBase+'gap:5px;padding:0 14px;border:1px solid #e2e2e6;background:#fff;color:'+(enabled?'#3a3a42':'#c4c4ca')+';'+(enabled?'':'cursor:not-allowed;');
+    const srPrevStyle = srArrow(srPageNum>1);
+    const srNextStyle = srArrow(srPageNum<8);
+
+    // ---- auth / account ----
+    const u = this.state.user || {};
+    const accountLabel = this.state.loggedIn ? (hi?'खाता':'Account') : t.login;
+    const accountContact = u.method==='phone' ? u.phone : (u.email || '');
+    const accountName = u.name || (hi?'सलिल पाठक':'Salil Reader');
+    const accountInitial = (u.name ? u.name.trim()[0] : (u.method==='phone' ? '#' : '@')).toUpperCase();
+    const authPhoneFmt = this.state.authPhone;
+    const canSendOtpV = (this.state.authPhone||'').length >= 10;
+    const canVerifyV = (this.state.otp||'').length === 6;
+    const authBtnBase = 'width:100%;height:52px;border:none;border-radius:12px;background:linear-gradient(90deg,#e5720a,#c4530a);color:#fff;font-family:inherit;font-size:15.5px;font-weight:800;cursor:pointer;transition:filter .16s,transform .16s,opacity .16s;box-shadow:0 8px 20px rgba(229,114,10,.28);';
+    const continueBtnStyle = authBtnBase + 'opacity:'+(canSendOtpV?'1':'.5')+';';
+    const verifyBtnStyle = authBtnBase + 'opacity:'+(canVerifyV?'1':'.5')+';';
+    const vs = (has)=>'font-size:15px;font-weight:600;margin-top:2px;color:'+(has?'#26262b':'#b3b3ba')+';'+(has?'':'font-style:italic;');
+    const bookmarkList = this.state.bookmarkIds.map((i,k)=>({ ...S[i % S.length], bmSlot:'ss-bm'+k }));
+    const interestCats = hi ? ['राष्ट्रीय','राजनीति','बिज़नेस','खेल','टेक्नोलॉजी','विज्ञान','मनोरंजन','स्वास्थ्य','दुनिया','क्रिकेट','बाज़ार','स्टार्टअप','शिक्षा','ऑटो','लाइफस्टाइल','राय'] : ['National','Politics','Business','Sports','Technology','Science','Entertainment','Health','World','Cricket','Markets','Startups','Education','Auto','Lifestyle','Opinion'];
+    const interestChips = interestCats.map(c=>{ const on=this.state.interests.includes(c); return { label:c, onClick:this.toggleInterest(c), tick: on?'✓ ':'', style:'display:inline-flex;align-items:center;gap:2px;font-size:13.5px;font-weight:600;padding:9px 15px;border-radius:999px;cursor:pointer;transition:all .16s;border:1px solid '+(on?'#e5720a':'#e2e2e6')+';background:'+(on?'#e5720a':'#fff')+';color:'+(on?'#fff':'#3a3a42')+';' }; });
+    const acctCities = ['New Delhi','Mumbai','Bengaluru','Chennai','Kolkata','Hyderabad','Pune','Jaipur','Lucknow','Ahmedabad'];
+    const acctCityList = acctCities.map(c=>{ const on=this.state.acctCity===c; return { name:c, onClick:this.setAcctCity(c), style:'font-size:13.5px;font-weight:600;padding:9px 15px;border-radius:999px;cursor:pointer;transition:all .16s;border:1px solid '+(on?'#e5720a':'#e2e2e6')+';background:'+(on?'#fff7ef':'#fff')+';color:'+(on?'#b0560a':'#3a3a42')+';' }; });
+    const acctCityLabel = this.state.acctCity;
+    const perks = hi ? [
+      { h:'बिना रुकावट पढ़ें', t:'तेज़, विज्ञापन-हल्का अनुभव और सहेजी गई खबरें एक ही जगह।' },
+      { h:'खबरें बुकमार्क करें', t:'पसंदीदा लेख सहेजें और जब चाहें, हर डिवाइस पर पढ़ें।' },
+      { h:'अपनी फ़ीड कस्टमाइज़ करें', t:'अपनी रुचि के विषयों के अनुसार अपनी फ़ीड बनाएँ।' },
+      { h:'अपनी पसंदीदा भाषा में पढ़ें', t:'एक ही खाते से हिंदी और अंग्रेज़ी के बीच आसानी से बदलें।' }
+    ] : [
+      { h:'Read without limits', t:'A faster, lighter experience with your saved stories in one place.' },
+      { h:'Bookmark stories', t:'Save your favourite articles and read them anytime, on any device.' },
+      { h:'Customize your feed', t:'You can tailor your feed according to the topics and interests you care about.' },
+      { h:'Read in your favourite language', t:'Switch effortlessly between Hindi and English with one account.' }
+    ];
+    const pIdx = this.state.perkIdx % perks.length;
+    const activePerk = perks[pIdx];
+    const perkCard = React.createElement('div', { key: this.state.perkIdx, style:{ animation:'ssFadeUp .55s ease' } },
+      React.createElement('div', { style:{ width:'48px', height:'48px', borderRadius:'14px', background:'rgba(229,114,10,.2)', border:'1px solid rgba(229,168,106,.45)', display:'flex', alignItems:'center', justifyContent:'center', marginBottom:'20px' } },
+        React.createElement('span', { style:{ width:'9px', height:'15px', border:'solid #f2a33c', borderWidth:'0 3px 3px 0', transform:'rotate(45deg)', marginTop:'-3px', display:'inline-block' } })
+      ),
+      React.createElement('div', { style:{ fontFamily:"'Spectral','Noto Serif Devanagari',serif", fontSize:'23px', fontWeight:800, color:'#fff', lineHeight:1.2, marginBottom:'11px' } }, activePerk.h),
+      React.createElement('div', { style:{ fontSize:'15px', color:'#cabfb4', lineHeight:1.55, maxWidth:'320px' } }, activePerk.t)
+    );
+    const perkDots = perks.map((_,i)=>({ style: 'height:6px;border-radius:999px;transition:all .3s ease;background:'+(i===pIdx?'#e5720a':'rgba(255,255,255,.25)')+';width:'+(i===pIdx?'26px':'6px')+';' }));
+
+    return {
+      t, nav, trendingChips, networkBrands, footerCols,
+      socials:['f','X','in','▶','◎'],
+      hoveredNav: this.state.hoveredNav,
+      hoveredLabel: (nav.find(n=>n.k===this.state.hoveredNav)||{}).label || '',
+      megaSubcats: this.state.hoveredNav ? this.subcatMap[this.state.hoveredNav][hi?'hi':'en'] : [],
+      megaStories,
+      networkOpen: this.state.networkOpen,
+      isHome: page==='home', isArticle: page==='article', isVideos: page==='videos', isSearch: page==='search', isCategory: page==='category',
+      topbarStyle: 'position:sticky;top:0;z-index:50;background:#fff;transition:box-shadow .2s;box-shadow:'+(this.state.scrolled?'0 2px 16px rgba(0,0,0,.09)':'none')+';',
+      articleCompact: page==='article' && this.state.scrolled,
+      showTopStrip: !(page==='article' && this.state.scrolled),
+      showTrendingBar: !(page==='article' && this.state.scrolled),
+      showFullNav: !(page==='article' && this.state.scrolled),
+      logoStyle: 'height:'+((page==='article' && this.state.scrolled)?'38px':'58px')+';width:auto;display:block;cursor:pointer;transition:height .2s;',
+      articleHeadline: article.title,
+      isEpaper: page==='epaper', isWeather: page==='weather', isCommodity: page==='commodity',
+      isSignin: page==='signin', isOtp: page==='otp', isAccount: page==='account', isBookmarks: page==='bookmarks',
+      showChrome: !(page==='signin' || page==='otp'),
+      loggedIn: this.state.loggedIn, accountLabel, accountContact, accountName, accountInitial, perks, perkCard, perkDots,
+      goSignin:this.goSignin, goBookmarks:this.goBookmarks, goAccount:()=>go('account'), logout:this.logout,
+      continueBtnStyle, verifyBtnStyle,
+      notEditing: !this.state.editProfile,
+      infoName: u.name || t.notProvided, infoGender: u.gender || t.notProvided, infoDob: u.dob || t.notProvided, infoEmail: u.email || t.notProvided,
+      nameVS: vs(!!u.name), genderVS: vs(!!u.gender), dobVS: vs(!!u.dob), emailVS: vs(!!u.email),
+      bmCount: this.state.bookmarkIds.length,
+      authPhone:this.state.authPhone, authPhoneFmt, setAuthPhone:this.setAuthPhone, sendOtp:this.sendOtp, canSendOtp:(this.state.authPhone||'').length>=10,
+      otp:this.state.otp, setOtp:this.setOtp, verifyOtp:this.verifyOtp, canVerify:(this.state.otp||'').length===6,
+      loginGoogle:this.loginGoogle, loginApple:this.loginApple,
+      user:u, editProfile:this.state.editProfile, toggleEditProfile:this.toggleEditProfile,
+      pf:this.state.pf, onPfName:this.setPf('name'), onPfGender:this.setPf('gender'), onPfDob:this.setPf('dob'), onPfEmail:this.setPf('email'), saveProfile:this.saveProfile,
+      newsletterOn:this.state.newsletterOn, newsletterOff:!this.state.newsletterOn, toggleNewsletter:this.toggleNewsletter, bookmarkList,
+      interestChips, acctCityList, acctCityLabel,
+      openNetwork:this.openNetwork, closeNetwork:this.closeNetwork, setNetRef:this.setNetRef,
+      showGoTop: page==='category' && this.state.scrolled, scrollTop:()=>window.scrollTo({top:0,behavior:'smooth'}),
+      otpBoxes: Array.from({length:6},(_,i)=>((this.state.otp||'')[i]||'')),
+      drawerBackdropStyle: 'position:fixed;inset:0;z-index:70;background:rgba(10,10,12,.42);transition:opacity .28s ease;opacity:'+(this.state.sidebarOpen?'1':'0')+';pointer-events:'+(this.state.sidebarOpen?'auto':'none')+';',
+      drawerPanelStyle: 'position:absolute;left:0;top:0;bottom:0;width:372px;max-width:90vw;background:#faf9f7;box-shadow:2px 0 34px rgba(0,0,0,.28);overflow-y:auto;padding:18px 22px 44px;transition:transform .3s cubic-bezier(.4,0,.2,1);transform:translateX('+(this.state.sidebarOpen?'0':'-102%')+');',
+      goHome:()=>go('home'), goVideos:()=>go('videos'), goSearch:()=>go('search'), goIndia:()=>go('category','india'), goWorld:()=>go('category','world'), goWeather:this.goWeather, goEpaper:this.goEpaper, goGold:()=>this.goCommodity('gold'), goSilver:()=>this.goCommodity('silver'), setGold:this.setGold, setSilver:this.setSilver,
+      clearHover:this.clearHover, toggleNetwork:this.toggleNetwork, openArticle:this.openArticle,
+      setEn:this.setEn, setHi:this.setHi,
+      enBtnStyle:'background:'+(hi?'transparent':'#e5720a')+';color:'+(hi?'#c9c9cf':'#fff')+';border:none;font-family:inherit;font-size:12px;font-weight:700;padding:3px 9px;cursor:pointer;',
+      hiBtnStyle:'background:'+(hi?'#e5720a':'transparent')+';color:'+(hi?'#fff':'#c9c9cf')+';border:none;font-family:inherit;font-size:12px;font-weight:700;padding:3px 9px;cursor:pointer;',
+      dateStr: hi?'सोमवार, 7 जुलाई 2026':'Monday, 7 July 2026',
+      weatherStr: this.state.city + ' 34\u00b0C',
+      goldStr: hi?'सोना \u20b998,240':'Gold \u20b998,240',
+      silverStr: hi?'चांदी \u20b91,12,300':'Silver \u20b91,12,300',
+      hero:S[0], heroSide, indiaCards, worldCards, videosHome, opinionCards:O, market, latestList,
+      liveCaption: hi?'लाइव: बाढ़ की स्थिति पर मुख्यमंत्री की प्रेस वार्ता':'LIVE: Chief Minister\u2019s press briefing on the flood situation',
+      article, quickLinks,
+      videoNav, videosLatest, videosTop, channels,
+      query:this.state.query, onQuery:this.onQuery, ask:this.ask, answered:this.state.answered,
+      aiParas, aiBullets, searchRelated, followups,
+      catLabel, catLead, catList, catSub, catSubtopics, catAccent, bannerStyle, chipStyle, catIndia, catWorld, catPolitics, catBusiness, catSports,
+      epaper, epaperPerks, pastEditions, weather, hourly, daily, weatherStories,
+      commodity, commodityNews, commodityCalc, commoditySwatchGold, commoditySwatchSilver,
+      openSidebar:this.openSidebar, closeSidebar:this.closeSidebar, sidebarOpen:this.state.sidebarOpen, sidebarTopics, socialList, stop:(e)=>{ if(e&&e.stopPropagation) e.stopPropagation(); }, hideBroken:(e)=>{ if(e&&e.target) e.target.style.visibility='hidden'; },
+      onResultQuery:this.onResultQuery, doSidebarSearch:this.doSidebarSearch,
+      isResults: page==='results', resultQuery, searchTab, searchTabs, setSearchTab:this.setSearchTab, results, trendingSide,
+      srList, srVideos, srPhotos, srWeb, searchVideos, searchPhotos, searchWeb, srCountLabel,
+      srPages, srPrevStyle, srNextStyle, srPrev:this.srPrev, srNext:this.srNext, srPageNum,
+      weatherTab, setWeatherTab:this.setWeatherTab, locOpen:this.state.locOpen, toggleLoc:this.toggleLoc, setCity:this.setCity, locations,
+      wxWeather: weatherTab==='weather', wxAqi: weatherTab==='aqi', setWxW:()=>this.setWeatherTab('weather'), setWxA:()=>this.setWeatherTab('aqi'), useCurrentLoc:()=>this.setCity('New Delhi'),
+      wxTabW:'padding:9px 28px;font-size:14px;font-weight:700;border-radius:999px;cursor:pointer;background:'+(weatherTab==='weather'?'#fff':'transparent')+';box-shadow:'+(weatherTab==='weather'?'0 1px 3px rgba(0,0,0,.14)':'none')+';color:'+(weatherTab==='weather'?'#1a1a1f':'#7a7a82')+';',
+      wxTabA:'padding:9px 28px;font-size:14px;font-weight:700;border-radius:999px;cursor:pointer;background:'+(weatherTab==='aqi'?'#fff':'transparent')+';box-shadow:'+(weatherTab==='aqi'?'0 1px 3px rgba(0,0,0,.14)':'none')+';color:'+(weatherTab==='aqi'?'#1a1a1f':'#7a7a82')+';',
+      aqi, aqiScale, last7, pollutants,
+      catVideo, catHasVideo, catEdge, bannerVeil,
+      vtLive, vtLatest, vtCat, vtShorts, vtTop, vtNotShorts, featured, videoRows, videoCats, videosTopBig, liveChannels, shorts,
+      footerAbout: hi?'सलिल संदेश \u2014 विश्वसनीय, निष्पक्ष और बहुभाषी पत्रकारिता। हर खबर, स्रोत से समाज तक।':'Salil Sandesh \u2014 trusted, independent and multilingual journalism. Every story, from the source to society.'
+    };
+  }
+}
+</script>
+</body>
+</html>
