@@ -80,7 +80,7 @@
           <div onClick="{{ openArticle }}" style="cursor:pointer;margin:18px 0 22px;">
             <span style="display:inline-block;background:#d22b2b;color:#fff;font-size:11px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:4px;margin-bottom:10px;">{{ lead.cat }} LIVE</span>
             <h1 style="font-family:'Spectral','Noto Serif Devanagari',serif;font-size:27px;line-height:1.16;font-weight:800;margin:0 0 14px;letter-spacing:-.3px;color:#161619;">{{ lead.title }}</h1>
-            <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:#eee;"><image-slot id="m-hero" shape="rect"></image-slot></div>
+            <div onClick="{{ stop }}" style="position:relative;width:100%;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:#eee;"><image-slot id="m-hero" shape="rect"></image-slot></div>
           </div>
           <sc-for list="{{ homeList }}" as="item" hint-placeholder-count="4">
             <div onClick="{{ openArticle }}" style="cursor:pointer;display:flex;gap:14px;padding:16px 0;border-top:1px solid #eee;align-items:flex-start;">
